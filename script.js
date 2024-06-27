@@ -8,7 +8,7 @@ const budgetName = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
 let isCurrentBudget = true;
-const categories = [
+let categories = [
     {
         "name": "Giving",
         "subcategories": [
@@ -38,10 +38,15 @@ const categories = [
         ]
     }
 ];
+let categoriesAlt = [];
 
 setDisplay();
 
-editCatBtn.addEventListener("click", editCategories);
+editCatBtn.addEventListener("click", ()=> {
+    editWindow.style.display = "block";
+    categoriesAlt = categories;
+    displayEditCatWindow(categoriesAlt);
+});
 
 function setDisplay() {
     if (isCurrentBudget) {
@@ -55,43 +60,37 @@ function setDisplay() {
     };
 };
 
-
-function editCategories() {
-    editWindow.style.display = "block";
-    displayEditCatWindow();
-
-    function displayEditCatWindow() {
-        editWindow.innerHTML = `
-        <h3>Categories</h3>
-        <button id="edit-cat-cancel-btn">X</button>
-        <div id="edit-cat-container">
-            ${editCatHtml(categories)}
-        </div>
-        <button id="add-category-btn">+ New Category</button>
-        `;
-    };
+function displayEditCatWindow(categoriesArr) {
+    editWindow.innerHTML = `
+    <h3>Categories</h3>
+    <button id="edit-cat-cancel-btn">X</button>
+    <div id="edit-cat-container">
+        ${editCatHtml(categoriesArr)}
+    </div>
+    <button id="add-category-btn">+ New Category</button>
+    `;
 
     function editCatHtml(categoriesArr) {
         let htmlResult = "";
-
+    
         categoriesArr.forEach((categoryObj) => {
             const subcategoriesArr = categoryObj.subcategories;
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
-
+    
             htmlResult += `
                 <div class="edit-cat-category">
                     <p class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></p>
                     <div class="edit-cat-subcat-container">
             `;
-
+    
             subcategoriesArr.forEach((subcatObj) => {
                 const subCatNameId = subcatObj.name.replace(/\s/g, "-").toLowerCase();
-
+    
                 htmlResult += `
                     <p class="edit-cat-subcat">${subcatObj.name}  <button class="edit-cat-edit-btn" id="${subCatNameId}-edit-btn">edit</button></p>
                 `;
             });
-
+    
             htmlResult += `
                         <button class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</button>
                     </div>
@@ -101,3 +100,19 @@ function editCategories() {
         return htmlResult;
     };
 };
+
+document.getElementById("edit-cat-cancel-button").addEventListener("click", () => {
+    if (categoriesAlt !== categories) {
+        const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+        
+        if (cancel) {
+            categoriesAlt = [];
+            editWindow.style.display = "none";
+            editWindow.innerHTML = "";
+        }
+    } else {
+        categoriesAlt = [];
+        editWindow.style.display = "none";
+        editWindow.innerHTML = "";
+    };
+});
