@@ -80,22 +80,25 @@ function editCategories() {
 
             htmlResult += `
                 <details class="category">
-                    <summary class="edit-cat-name">${categoryObj.name}</summary>
+                    <summary class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></summary>
                     <div class="edit-cat-subcat-container">
             `;
 
             subcategoriesArr.forEach((subcatObj) => {
+                const subCatNameId = subcatObj.name.replace(/\s/g, "-").toLowerCase();
+
                 htmlResult += `
-                    <p class="edit-cat-subcat">${subCatObj.name}</p>
+                    <p class="edit-cat-subcat">${subcatObj.name}  <button class="edit-cat-edit-btn" id="${subCatNameId}-edit-btn">edit</button></p>
                 `;
             });
 
             htmlResult += `
+                        <button class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</button>
                     </div>
                 </details>
             `;
         });
-
+        console.log(htmlResult);
         return htmlResult;
     };
 };
