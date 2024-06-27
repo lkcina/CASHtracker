@@ -14,11 +14,15 @@ setDisplay();
 
 function setDisplay() {
     if (isCurrentBudget) {
-        toolbar.style.display = "block"
+        toolbar.style.display = "block";
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
-    }
-}
+    } else {
+        toolbar.style.display = "none";
+        budgetContainer.style.display = "none";
+        budgetPlaceholder.style.display = "block";
+    };
+};
 
 
 function editCategories() {
