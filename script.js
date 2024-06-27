@@ -12,7 +12,7 @@ const categories = [];
 
 setDisplay();
 
-editCatBtn.addEventListener("click", editCategories());
+editCatBtn.addEventListener("click", editCategories);
 
 function setDisplay() {
     if (isCurrentBudget) {
