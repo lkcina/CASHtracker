@@ -79,8 +79,8 @@ function editCategories() {
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
 
             htmlResult += `
-                <details class="category">
-                    <summary class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></summary>
+                <div class="category">
+                    <p class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></p>
                     <div class="edit-cat-subcat-container">
             `;
 
@@ -95,10 +95,9 @@ function editCategories() {
             htmlResult += `
                         <button class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</button>
                     </div>
-                </details>
+                </div>
             `;
         });
-        console.log(htmlResult);
         return htmlResult;
     };
 };
