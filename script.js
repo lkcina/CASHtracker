@@ -12,6 +12,8 @@ const categories = [];
 
 setDisplay();
 
+editCatBtn.addEventListener("click", editCategories());
+
 function setDisplay() {
     if (isCurrentBudget) {
         toolbar.style.display = "block";
@@ -26,5 +28,16 @@ function setDisplay() {
 
 
 function editCategories() {
+    editWindow.style.display = "block";
+    displayEditCatWindow()
 
+    function displayEditCatWindow() {
+        editWindow.innerHTML = `
+        <h3>Categories</h3>
+        <div id="edit-cat-container">
+            ${editCatHtml(categories)}
+        </div>
+        <button id="add-category-btn">+ New Category</button>
+        `;
+    };
 };
