@@ -95,5 +95,7 @@ function editCategories() {
                 </details>
             `;
         });
+
+        return htmlResult;
     };
 };
