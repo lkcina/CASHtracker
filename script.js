@@ -79,7 +79,7 @@ function editCategories() {
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
 
             htmlResult += `
-                <div class="category">
+                <div class="edit-cat-category">
                     <p class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></p>
                     <div class="edit-cat-subcat-container">
             `;
