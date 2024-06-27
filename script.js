@@ -46,6 +46,21 @@ editCatBtn.addEventListener("click", ()=> {
     editWindow.style.display = "block";
     categoriesAlt = categories;
     displayEditCatWindow(categoriesAlt);
+    document.getElementById("edit-cat-cancel-button").addEventListener("click", () => {
+        if (categoriesAlt !== categories) {
+            const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+            
+            if (cancel) {
+                categoriesAlt = [];
+                editWindow.style.display = "none";
+                editWindow.innerHTML = "";
+            }
+        } else {
+            categoriesAlt = [];
+            editWindow.style.display = "none";
+            editWindow.innerHTML = "";
+        };
+    });
 });
 
 function setDisplay() {
@@ -101,18 +116,3 @@ function displayEditCatWindow(categoriesArr) {
     };
 };
 
-document.getElementById("edit-cat-cancel-button").addEventListener("click", () => {
-    if (categoriesAlt !== categories) {
-        const cancel = confirm("Are you sure you want to close the window and lose your changes?");
-        
-        if (cancel) {
-            categoriesAlt = [];
-            editWindow.style.display = "none";
-            editWindow.innerHTML = "";
-        }
-    } else {
-        categoriesAlt = [];
-        editWindow.style.display = "none";
-        editWindow.innerHTML = "";
-    };
-});
