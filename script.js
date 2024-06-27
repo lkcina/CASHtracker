@@ -7,7 +7,7 @@ const newBudgetBtn = document.getElementsByClassName("new-budget-btn");
 const budgetName = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
-let isCurrentBudget = false;
+let isCurrentBudget = true;
 const categories = [];
 
 setDisplay();
