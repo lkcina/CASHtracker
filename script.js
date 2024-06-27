@@ -71,18 +71,15 @@ function displayEditCatWindow(categoriesArr) {
     `;
 
 
-    const cancelBtn = document.getElementById("edit-cat-cancel-btn");
-
     function editCatHtml(categoriesArr) {
         let htmlResult = "";
     
         categoriesArr.forEach((categoryObj) => {
             const subcategoriesArr = categoryObj.subcategories;
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
-    
             htmlResult += `
                 <div class="edit-cat-category">
-                    <p class="edit-cat-name">${categoryObj.name}  <button class="edit-cat-edit-btn" id="${categoryNameId}-edit-btn">edit</button></p>
+                    <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}">
                     <div class="edit-cat-subcat-container">
             `;
     
@@ -101,10 +98,18 @@ function displayEditCatWindow(categoriesArr) {
             `;
         });
 
-        
-
         return htmlResult;
     };
+
+    const catInput = Array.from(document.getElementsByClassName("edit-cat-name"));
+    catInput.forEach((input) => {
+        input.addEventListener("change", () => {
+            categoriesAlt[catInput.indexOf(input)].name = input.value;
+        });
+    });
+
+
+    const cancelBtn = document.getElementById("edit-cat-cancel-btn");
     cancelBtn.addEventListener("click", () => {
         if (categoriesAlt !== categories) {
             const cancel = confirm("Are you sure you want to close the window and lose your changes?");
@@ -120,5 +125,7 @@ function displayEditCatWindow(categoriesArr) {
             editWindow.innerHTML = "";
         };
     });
+
+
 };
 
