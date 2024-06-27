@@ -87,7 +87,7 @@ function displayEditCatWindow(categoriesArr) {
                 const subCatNameId = subcatObj.name.replace(/\s/g, "-").toLowerCase();
     
                 htmlResult += `
-                    <p class="edit-cat-subcat">${subcatObj.name}  <button class="edit-cat-edit-btn" id="${subCatNameId}-edit-btn">edit</button></p>
+                    <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}"</input>
                 `;
             });
     
@@ -101,13 +101,23 @@ function displayEditCatWindow(categoriesArr) {
         return htmlResult;
     };
 
-    const catInput = Array.from(document.getElementsByClassName("edit-cat-name"));
-    catInput.forEach((input) => {
+    const catInputs = Array.from(document.getElementsByClassName("edit-cat-name"));
+    catInputs.forEach((input) => {
         input.addEventListener("change", () => {
-            categoriesAlt[catInput.indexOf(input)].name = input.value;
+            categoriesArr[catInputs.indexOf(input)].name = input.value;
+            console.log(categoriesArr);
         });
-    });
 
+        const subcatInputs = Array.from(document.getElementsByClassName("edit-cat-subcat-name"));
+// Fix this subcategory listener assigner - subcatInputs[i] should iterate through subcatInputs
+        for (let i = 0; i < categoriesArr[catInputs.indexOf(input)].subcategories.length; i++) {
+            subcatInputs[i].addEventListener("change", () => {
+                categoriesArr[catInputs.indexOf(input)].subcategories[i].name = subcatInputs[i].value;
+                console.log(categoriesArr[catInputs.indexOf(input)].subcategories[i].name);
+            });
+        };
+        
+    });
 
     const cancelBtn = document.getElementById("edit-cat-cancel-btn");
     cancelBtn.addEventListener("click", () => {
