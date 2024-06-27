@@ -8,7 +8,36 @@ const budgetName = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
 let isCurrentBudget = true;
-const categories = [];
+const categories = [
+    {
+        "name": "Giving",
+        "subcategories": [
+            {
+                "name": "Tithe",
+                "budgeted": 0,
+                "spent": 0,
+                "remaining": 0
+            },
+            {
+                "name": "Charity",
+                "budgeted": 0,
+                "spent": 0,
+                "remaining": 0
+            }
+        ]
+    },
+    {
+        "name": "Housing",
+        "subcategories": [
+            {
+                "name": "Rent",
+                "budgeted": 0,
+                "spent": 0,
+                "remaining": 0
+            }
+        ]
+    }
+];
 
 setDisplay();
 
@@ -47,8 +76,24 @@ function editCategories() {
 
         categoriesArr.forEach((categoryObj) => {
             const subcategoriesArr = categoryObj.subcategories;
+            const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
 
-            htmlResult += `<dialog`
-        })
+            htmlResult += `
+                <details class="category">
+                    <summary class="edit-cat-name">${categoryObj.name}</summary>
+                    <div class="edit-cat-subcat-container">
+            `;
+
+            subcategoriesArr.forEach((subcatObj) => {
+                htmlResult += `
+                    <p class="edit-cat-subcat">${subCatObj.name}</p>
+                `;
+            });
+
+            htmlResult += `
+                    </div>
+                </details>
+            `;
+        });
     };
 };
