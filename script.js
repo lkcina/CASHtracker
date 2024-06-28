@@ -101,24 +101,28 @@ function displayEditCatWindow(categoriesArr) {
         return htmlResult;
     };
 
-    const catInputs = Array.from(document.getElementsByClassName("edit-cat-name"));
+    // Category Inputs Event Listeners
+    const catInputs = Array.from(document.getElementsByClassName("edit-cat-name"));    
     catInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-            categoriesArr[catInputs.indexOf(input)].name = input.value;
-            console.log(categoriesArr);
-        });
-
-        const subcatInputs = Array.from(document.getElementsByClassName("edit-cat-subcat-name"));
-// Fix this subcategory listener assigner - subcatInputs[i] should iterate through subcatInputs
-        for (let i = 0; i < categoriesArr[catInputs.indexOf(input)].subcategories.length; i++) {
-            subcatInputs[i].addEventListener("change", () => {
-                categoriesArr[catInputs.indexOf(input)].subcategories[i].name = subcatInputs[i].value;
-                console.log(categoriesArr[catInputs.indexOf(input)].subcategories[i].name);
-            });
-        };
+        const category = categoriesArr[catInputs.indexOf(input)];
         
+        input.addEventListener("change", () => {
+            category.name = input.value;
+        });
+        
+        let subcatStart = 0;
+        for (let i = 0; categoriesArr[i] !== category; i ++) {
+            subcatStart += categoriesArr[i].subcategories.length;
+        };        
+        const subcatInputs = Array.from(document.getElementsByClassName("edit-cat-subcat-name")).slice(subcatStart, subcatStart + category.subcategories.length);
+        subcatInputs.forEach((subInput) => {
+            subInput.addEventListener("change", () => {
+                category.subcategories[subcatInputs.indexOf(subInput)].name = subInput.value;
+            })
+        })
     });
 
+    // Cancel Button Event Listener
     const cancelBtn = document.getElementById("edit-cat-cancel-btn");
     cancelBtn.addEventListener("click", () => {
         if (categoriesAlt !== categories) {
