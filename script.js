@@ -44,8 +44,8 @@ setDisplay();
 
 editCatBtn.addEventListener("click", ()=> {
     editWindow.style.display = "block";
-    categoriesAlt = categories;
-    displayEditCatWindow(categoriesAlt);
+    categoriesAlt = JSON.parse(JSON.stringify(categories));
+    displayEditCatWindow();
 });
 
 function setDisplay() {
@@ -65,16 +65,16 @@ function displayEditCatWindow(categoriesArr) {
     <h3>Categories</h3>
     <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
     <div id="edit-cat-container">
-        ${editCatHtml(categoriesArr)}
+        ${editCatHtml(categoriesAlt)}
     </div>
     <button id="add-category-btn">+ New Category</button>
     `;
 
 
-    function editCatHtml(categoriesArr) {
+    function editCatHtml(categoriesAlt) {
         let htmlResult = "";
     
-        categoriesArr.forEach((categoryObj) => {
+        categoriesAlt.forEach((categoryObj) => {
             const subcategoriesArr = categoryObj.subcategories;
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
             htmlResult += `
@@ -102,24 +102,24 @@ function displayEditCatWindow(categoriesArr) {
     };
 
     // Category Inputs Event Listeners
-    const catInputs = Array.from(document.getElementsByClassName("edit-cat-name"));    
+    const catInputs = [...document.getElementsByClassName("edit-cat-name")];    
     catInputs.forEach((input) => {
-        const category = categoriesArr[catInputs.indexOf(input)];
+        const category = categoriesAlt[catInputs.indexOf(input)];
         
         input.addEventListener("change", () => {
             category.name = input.value;
         });
         
         let subcatStart = 0;
-        for (let i = 0; categoriesArr[i] !== category; i ++) {
-            subcatStart += categoriesArr[i].subcategories.length;
+        for (let i = 0; categoriesAlt[i] !== category; i ++) {
+            subcatStart += categoriesAlt[i].subcategories.length;
         };        
-        const subcatInputs = Array.from(document.getElementsByClassName("edit-cat-subcat-name")).slice(subcatStart, subcatStart + category.subcategories.length);
+        const subcatInputs = [...document.getElementsByClassName("edit-cat-subcat-name")].slice(subcatStart, subcatStart + category.subcategories.length);
         subcatInputs.forEach((subInput) => {
             subInput.addEventListener("change", () => {
                 category.subcategories[subcatInputs.indexOf(subInput)].name = subInput.value;
-            })
-        })
+            });
+        });
     });
 
     // Cancel Button Event Listener
@@ -132,7 +132,10 @@ function displayEditCatWindow(categoriesArr) {
                 categoriesAlt = [];
                 editWindow.style.display = "none";
                 editWindow.innerHTML = "";
-            }
+                console.log(categories);
+            } else {
+                displayEditCatWindow(categoriesAlt);
+            };
         } else {
             categoriesAlt = [];
             editWindow.style.display = "none";
@@ -140,6 +143,19 @@ function displayEditCatWindow(categoriesArr) {
         };
     });
 
+    // Add Category and Subcategory Button Event Listeners
+    const addCategoryBtn = document.getElementById("add-category-btn");
+    addCategoryBtn.addEventListener("click", () => {
+        categoriesAlt.push({"name": "", "subcategories": []});
+        displayEditCatWindow();
+    });
 
+    const addSubcatBtn = [...document.getElementsByClassName("add-subcat-btn")];
+    addSubcatBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            categoriesAlt[addSubcatBtn.indexOf(btn)].subcategories.push({"name": "", "budgeted": 0, "spent": 0, "remaining": 0});
+            displayEditCatWindow();
+        })
+    })
 };
 
