@@ -7,34 +7,8 @@ const newBudgetBtn = document.getElementsByClassName("new-budget-btn");
 const budgetName = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
-let isCurrentBudget = true;
-let categories = [
-    {
-        "name": "Giving",
-        "subcategories": [
-            {
-                "name": "Tithe",
-                "budgeted": 0,
-                "receipts": [13.78, 26.59]
-            },
-            {
-                "name": "Charity",
-                "budgeted": 0,
-                "receipts": [200]
-            }
-        ]
-    },
-    {
-        "name": "Housing",
-        "subcategories": [
-            {
-                "name": "Rent",
-                "budgeted": 0,
-                "receipts": []
-            }
-        ]
-    }
-];
+let isCurrentBudget = false;
+let categories = [];
 let categoriesAlt = [];
 
 setDisplay();
@@ -65,6 +39,7 @@ function displayEditCatWindow() {
         ${editCatHtml()}
     </div>
     <button id="add-category-btn">+ New Category</button>
+    <button id="edit-cat-confirm-btn">Confirm Changes</button>
     `;
 
 
@@ -153,7 +128,7 @@ function displayEditCatWindow() {
     // Cancel Button Event Listener
     const cancelBtn = document.getElementById("edit-cat-cancel-btn");
     cancelBtn.addEventListener("click", () => {
-        if (categoriesAlt !== categories) {
+        if (JSON.stringify(categoriesAlt) !== JSON.stringify(categories)) {
             const cancel = confirm("Are you sure you want to close the window and lose your changes?");
             
             if (cancel) {
@@ -170,6 +145,22 @@ function displayEditCatWindow() {
         };
     });
 
+    // Confirm Button Event Listener
+    const confirmBtn = document.getElementById("edit-cat-confirm-btn");
+    confirmBtn.addEventListener("click", () => {
+        const confirmChanges = confirm("Are you sure you want to confirm changes? This action cannot be undone.");
+
+        if (confirmChanges) {
+            categories = JSON.parse(JSON.stringify(categoriesAlt));
+            categoriesAlt = [];
+            editWindow.style.diplay = "none";
+            editWindow.innerHTML = "";
+            console.log(categories);
+        } else {
+            displayEditCatWindow();
+        };
+    });
+
     // Add Category and Subcategory Button Event Listeners
     const addCategoryBtn = document.getElementById("add-category-btn");
     addCategoryBtn.addEventListener("click", () => {
@@ -182,10 +173,8 @@ function displayEditCatWindow() {
         btn.addEventListener("click", () => {
             categoriesAlt[addSubcatBtn.indexOf(btn)].subcategories.push({"name": "", "budgeted": 0, "receipts": []});
             displayEditCatWindow();
-        })
-    })
-
-    // Delete Category and Subcategory Button Event Listeners
+        });
+    });
 
 };
 
