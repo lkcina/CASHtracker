@@ -25,7 +25,7 @@ function setDisplay() {
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
     } else {
-        toolbar.style.display = "none";
+        toolbarDiv.style.display = "none";
         budgetContainer.style.display = "none";
         budgetPlaceholder.style.display = "block";
     };
