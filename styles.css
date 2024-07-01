@@ -9,18 +9,22 @@ header {
 
 #budget-placeholder {
     border: 1px solid yellow;
+    display: block;
 }
 
 #toolbar {
     border: 1px solid green;
+    display: none;
 }
 
 #edit-window {
     border: 1px solid red;
+    display: none;
 }
 
 #budget-container {
     border: 1px solid black;
+    display: none;
 }
 
 .category {
