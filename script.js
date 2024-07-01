@@ -15,14 +15,12 @@ let categories = [
             {
                 "name": "Tithe",
                 "budgeted": 0,
-                "spent": 0,
-                "remaining": 0
+                "receipts": [13.78, 26.59]
             },
             {
                 "name": "Charity",
                 "budgeted": 0,
-                "spent": 0,
-                "remaining": 0
+                "receipts": [200]
             }
         ]
     },
@@ -32,8 +30,7 @@ let categories = [
             {
                 "name": "Rent",
                 "budgeted": 0,
-                "spent": 0,
-                "remaining": 0
+                "receipts": []
             }
         ]
     }
@@ -60,18 +57,18 @@ function setDisplay() {
     };
 };
 
-function displayEditCatWindow(categoriesArr) {
+function displayEditCatWindow() {
     editWindow.innerHTML = `
     <h3>Categories</h3>
     <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
     <div id="edit-cat-container">
-        ${editCatHtml(categoriesAlt)}
+        ${editCatHtml()}
     </div>
     <button id="add-category-btn">+ New Category</button>
     `;
 
 
-    function editCatHtml(categoriesAlt) {
+    function editCatHtml() {
         let htmlResult = "";
     
         categoriesAlt.forEach((categoryObj) => {
@@ -80,6 +77,7 @@ function displayEditCatWindow(categoriesArr) {
             htmlResult += `
                 <div class="edit-cat-category">
                     <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}">
+                    <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn">X</button>
                     <div class="edit-cat-subcat-container">
             `;
     
@@ -88,7 +86,10 @@ function displayEditCatWindow(categoriesArr) {
     
                 htmlResult += `
                     <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}"</input>
+                    <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn">X</button>
                 `;
+
+                
             });
     
             htmlResult += `
@@ -101,24 +102,51 @@ function displayEditCatWindow(categoriesArr) {
         return htmlResult;
     };
 
-    // Category Inputs Event Listeners
+    // Category Inputs and Delete Buttons Event Listeners
     const catInputs = [...document.getElementsByClassName("edit-cat-name")];    
     catInputs.forEach((input) => {
-        const category = categoriesAlt[catInputs.indexOf(input)];
-        
+        const category = categoriesAlt[catInputs.indexOf(input)];        
         input.addEventListener("change", () => {
             category.name = input.value;
         });
         
+        const catDelBtns = [...document.getElementsByClassName("edit-cat-del-cat-btn")];
+        
+            if (category.subcategories.length === 0) {
+                catDelBtns[catInputs.indexOf(input)].style.display = "inline-block";
+                
+                catDelBtns[catInputs.indexOf(input)].addEventListener("click", () => {
+                    categoriesAlt.splice(catInputs.indexOf(input), 1);
+                    displayEditCatWindow();
+                });
+            } else {
+                catDelBtns[catInputs.indexOf(input)].style.display = "none";
+            };
+
         let subcatStart = 0;
         for (let i = 0; categoriesAlt[i] !== category; i ++) {
             subcatStart += categoriesAlt[i].subcategories.length;
         };        
         const subcatInputs = [...document.getElementsByClassName("edit-cat-subcat-name")].slice(subcatStart, subcatStart + category.subcategories.length);
+        
         subcatInputs.forEach((subInput) => {
             subInput.addEventListener("change", () => {
                 category.subcategories[subcatInputs.indexOf(subInput)].name = subInput.value;
+
+            
             });
+        });
+
+        const subcatDelBtns = [...document.getElementsByClassName("edit-cat-del-sub-btn")].slice(subcatStart, subcatStart + category.subcategories.length);
+        subcatDelBtns.forEach((delBtn) => {
+            if (category.subcategories[subcatDelBtns.indexOf(delBtn)].receipts.length === 0) {
+                delBtn.addEventListener("click", () => {
+                    category.subcategories.splice(subcatDelBtns.indexOf(delBtn), 1);
+                    displayEditCatWindow();
+                });
+            } else {
+                delBtn.style.display = "none";
+            };
         });
     });
 
@@ -132,9 +160,8 @@ function displayEditCatWindow(categoriesArr) {
                 categoriesAlt = [];
                 editWindow.style.display = "none";
                 editWindow.innerHTML = "";
-                console.log(categories);
             } else {
-                displayEditCatWindow(categoriesAlt);
+                displayEditCatWindow();
             };
         } else {
             categoriesAlt = [];
@@ -153,9 +180,12 @@ function displayEditCatWindow(categoriesArr) {
     const addSubcatBtn = [...document.getElementsByClassName("add-subcat-btn")];
     addSubcatBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
-            categoriesAlt[addSubcatBtn.indexOf(btn)].subcategories.push({"name": "", "budgeted": 0, "spent": 0, "remaining": 0});
+            categoriesAlt[addSubcatBtn.indexOf(btn)].subcategories.push({"name": "", "budgeted": 0, "receipts": []});
             displayEditCatWindow();
         })
     })
+
+    // Delete Category and Subcategory Button Event Listeners
+
 };
 
