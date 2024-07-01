@@ -4,14 +4,27 @@ const budgetContainer = document.getElementById("budget-container");
 const budgetPlaceholder = document.getElementById("budget-placeholder");
 const toolbarDiv = document.getElementById("toolbar");
 const newBudgetBtn = document.getElementsByClassName("new-budget-btn");
-const budgetName = document.getElementById("budget-name");
+const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
 let isCurrentBudget = false;
 let categories = [];
 let categoriesAlt = [];
+let budgetName = "Budget Name";
 
 setDisplay();
+
+newBudgetBtn.addEventListener("click", () => {
+    editWindow.style.display = "block";
+    editWindow.innerHTML = `
+        <h3>Budget Name </h3>
+        <button class="edit-window-cancel-btn" id="new-budget-cancel-btn">X</button>
+        <input id="new-budget-name" type="text">
+        <button id="new-budget-continue-btn">Continue</button>
+    `;
+
+    
+})
 
 editCatBtn.addEventListener("click", ()=> {
     editWindow.style.display = "block";
@@ -31,14 +44,17 @@ function setDisplay() {
     };
 };
 
+
+
 function displayEditCatWindow() {
     editWindow.innerHTML = `
     <h3>Categories</h3>
     <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
     <div id="edit-cat-container">
         ${editCatHtml()}
+        <button id="add-category-btn">+ New Category</button>
     </div>
-    <button id="add-category-btn">+ New Category</button>
+    
     <button id="edit-cat-confirm-btn">Confirm Changes</button>
     `;
 
