@@ -295,7 +295,6 @@ function displayAddReceiptWindow() {
                 <option class="subcat-option" value="${i}">${categories[categoryIndex].subcategories[i].name}</option>
             `;
         };
-        console.log(selectSubcategory.innerHTML);
     }
 
     selectCategory.addEventListener("change", () => {
@@ -305,6 +304,12 @@ function displayAddReceiptWindow() {
     addReceiptForm.addEventListener("submit", (event) => {
         event.preventDefault();
         receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": totalInput.value, "memo": memoInput.value});
-        console.log(receipts);
+        syncReceipts();
+        console.log(categories);
     });
+};
+
+function syncReceipts() {
+    
+    receipts.forEach()
 };
