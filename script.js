@@ -309,6 +309,18 @@ function displayAddReceiptWindow() {
         console.log(categories);
         setDisplay();
     });
+
+    const cancelBtn = document.getElementById("add-receipt-cancel-btn");
+    cancelBtn.addEventListener("click", () => {
+        const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+                
+        if (cancel) {
+            editWindow.style.display = "none";
+            editWindow.innerHTML = "";
+        } else {
+            return;
+        };
+    })
 };
 
 function syncReceipts() {
