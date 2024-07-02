@@ -279,7 +279,6 @@ function displayAddReceiptWindow() {
     const memoInput = document.getElementById("add-receipt-memo");
 
     selectCategory.innerHTMl = "";
-    selectSubcategory.innerHTML = "";
     for (let i = 0; i < categories.length; i ++) {
         selectCategory.innerHTML += `
             <option class="cat-option" value="${i}">${categories[i].name}</option>
@@ -305,11 +304,21 @@ function displayAddReceiptWindow() {
         event.preventDefault();
         receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": totalInput.value, "memo": memoInput.value});
         syncReceipts();
+        editWindow.style.diplay = "none";
+        editWindow.innerHTML = "";
         console.log(categories);
+        setDisplay();
     });
 };
 
 function syncReceipts() {
-    
-    receipts.forEach()
+    categories.forEach((category) => {
+        category.subcategories.forEach((subcategory) => {
+            subcategory.receipts = [];
+        })
+    })
+
+    receipts.forEach((receipt) => {
+        categories[receipt.category].subcategories[receipt.subcategory].receipts.push(receipt.total);
+    });
 };
