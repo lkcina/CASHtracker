@@ -3,20 +3,58 @@ const editWindow = document.getElementById("edit-window");
 const budgetContainer = document.getElementById("budget-container");
 const budgetPlaceholder = document.getElementById("budget-placeholder");
 const toolbarDiv = document.getElementById("toolbar");
-const newBudgetBtn = document.getElementsByClassName("new-budget-btn");
-const budgetName = document.getElementById("budget-name");
+const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
+const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
 let isCurrentBudget = false;
 let categories = [];
 let categoriesAlt = [];
+let budgetName = "";
 
 setDisplay();
+
+newBudgetBtn.forEach((btn) => {
+    btn.addEventListener("click", () => {        
+        editWindow.style.display = "block";
+        editWindow.innerHTML = `
+            <h3>Budget Name </h3>
+            <button class="edit-window-cancel-btn" id="new-budget-cancel-btn">X</button>
+            <input id="new-budget-name" type="text">
+            <button id="new-budget-continue-btn">Continue</button>
+        `;
+    
+        const cancelBtn = document.getElementById("new-budget-cancel-btn");
+        cancelBtn.addEventListener("click", () => {
+            editWindow.style.display = "none";
+            editWindow.innerHTML = "";
+        });
+
+        const continueBtn = document.getElementById("new-budget-continue-btn");
+        const newBudgetName = document.getElementById("new-budget-name");
+
+        continueBtn.addEventListener("click", () => {
+            if (newBudgetName.value === "") {
+                alert("Please provide a name for your new budget.");
+            } else {
+                const replaceBudget = confirm("Are you sure you want to create a new budget? Any existing budget information will be overwritten.");
+                if (replaceBudget) {
+                    isCurrentBudget = true;
+                    budgetName = newBudgetName.value;
+                    categoriesAlt = [];
+                    displayEditCatWindow(true);
+                } else {
+                    return;
+                };
+            };
+        });        
+    });
+});
 
 editCatBtn.addEventListener("click", ()=> {
     editWindow.style.display = "block";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
-    displayEditCatWindow();
+    displayEditCatWindow(false);
 });
 
 function setDisplay() {
@@ -24,6 +62,7 @@ function setDisplay() {
         toolbarDiv.style.display = "block";
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
+        budgetNameInput.value = budgetName;
     } else {
         toolbarDiv.style.display = "none";
         budgetContainer.style.display = "none";
@@ -31,14 +70,17 @@ function setDisplay() {
     };
 };
 
-function displayEditCatWindow() {
+
+
+function displayEditCatWindow(isRequired) {
     editWindow.innerHTML = `
     <h3>Categories</h3>
     <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
     <div id="edit-cat-container">
         ${editCatHtml()}
+        <button id="add-category-btn">+ New Category</button>
     </div>
-    <button id="add-category-btn">+ New Category</button>
+    
     <button id="edit-cat-confirm-btn">Confirm Changes</button>
     `;
 
@@ -92,7 +134,7 @@ function displayEditCatWindow() {
                 
                 catDelBtns[catInputs.indexOf(input)].addEventListener("click", () => {
                     categoriesAlt.splice(catInputs.indexOf(input), 1);
-                    displayEditCatWindow();
+                    displayEditCatWindow(isRequired);
                 });
             } else {
                 catDelBtns[catInputs.indexOf(input)].style.display = "none";
@@ -117,7 +159,7 @@ function displayEditCatWindow() {
             if (category.subcategories[subcatDelBtns.indexOf(delBtn)].receipts.length === 0) {
                 delBtn.addEventListener("click", () => {
                     category.subcategories.splice(subcatDelBtns.indexOf(delBtn), 1);
-                    displayEditCatWindow();
+                    displayEditCatWindow(isRequired);
                 });
             } else {
                 delBtn.style.display = "none";
@@ -127,23 +169,29 @@ function displayEditCatWindow() {
 
     // Cancel Button Event Listener
     const cancelBtn = document.getElementById("edit-cat-cancel-btn");
-    cancelBtn.addEventListener("click", () => {
-        if (JSON.stringify(categoriesAlt) !== JSON.stringify(categories)) {
-            const cancel = confirm("Are you sure you want to close the window and lose your changes?");
-            
-            if (cancel) {
+    if (isRequired) {
+        cancelBtn.style.display = "none";
+    } else {
+        cancelBtn.style.display = "inline-block";
+        cancelBtn.addEventListener("click", () => {
+            if (JSON.stringify(categoriesAlt) !== JSON.stringify(categories)) {
+                const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+                
+                if (cancel) {
+                    categoriesAlt = [];
+                    editWindow.style.display = "none";
+                    editWindow.innerHTML = "";
+                } else {
+                    displayEditCatWindow(isRequired);
+                };
+            } else {
                 categoriesAlt = [];
                 editWindow.style.display = "none";
                 editWindow.innerHTML = "";
-            } else {
-                displayEditCatWindow();
             };
-        } else {
-            categoriesAlt = [];
-            editWindow.style.display = "none";
-            editWindow.innerHTML = "";
-        };
-    });
+        });
+    };
+    
 
     // Confirm Button Event Listener
     const confirmBtn = document.getElementById("edit-cat-confirm-btn");
@@ -156,8 +204,9 @@ function displayEditCatWindow() {
             editWindow.style.diplay = "none";
             editWindow.innerHTML = "";
             console.log(categories);
+            setDisplay();
         } else {
-            displayEditCatWindow();
+            displayEditCatWindow(isRequired);
         };
     });
 
@@ -165,16 +214,15 @@ function displayEditCatWindow() {
     const addCategoryBtn = document.getElementById("add-category-btn");
     addCategoryBtn.addEventListener("click", () => {
         categoriesAlt.push({"name": "", "subcategories": []});
-        displayEditCatWindow();
+        displayEditCatWindow(isRequired);
     });
 
     const addSubcatBtn = [...document.getElementsByClassName("add-subcat-btn")];
     addSubcatBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
             categoriesAlt[addSubcatBtn.indexOf(btn)].subcategories.push({"name": "", "budgeted": 0, "receipts": []});
-            displayEditCatWindow();
+            displayEditCatWindow(isRequired);
         });
     });
-
 };
 
