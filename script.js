@@ -11,6 +11,7 @@ let isCurrentBudget = false;
 let categories = [];
 let categoriesAlt = [];
 let budgetName = "";
+let receipts = [];
 
 setDisplay();
 
@@ -51,11 +52,16 @@ newBudgetBtn.forEach((btn) => {
     });
 });
 
-editCatBtn.addEventListener("click", ()=> {
+editCatBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
     displayEditCatWindow(false);
 });
+
+addReceiptBtn.addEventListener("click", () => {
+    editWindow.style.display = "block";
+    displayAddReceiptWindow();
+})
 
 function setDisplay() {
     if (isCurrentBudget) {
@@ -226,3 +232,22 @@ function displayEditCatWindow(isRequired) {
     });
 };
 
+function displayAddReceiptWindow() {
+    editWindow.innerHTML = `
+        <h3>Add Receipt</h3>
+        <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
+        <form id="add-receipt-container">
+            <label for="add-receipt-cat">Category</label>
+            <select name="category" id="add-receipt-cat" required>
+            </select>
+            <label for="add-receipt-subcat">Subcategory</label>
+            <select name="subcategory" id="add-receipt-subcat" required>
+            </select>
+            <label for="add-receipt-total">Total</label>
+            <p>$<input id="add-receipt-total" name="total" type="number" required></p>
+            <label for="add-receipt-memo">Memo</label>
+            <input id="add-receipt-memo" name="memo" type="text">
+            <button type="submit" id="add-receipt-submit">Submit</button>
+        </form>
+    `;
+};
