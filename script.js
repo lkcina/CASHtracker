@@ -7,8 +7,29 @@ const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
-let isCurrentBudget = false;
-let categories = [];
+let isCurrentBudget = true;
+let categories = [    
+    {
+        "name": "Food",
+        "subcategories": [
+            {
+                "name": "Groceries",
+                "budgeted": 200,
+                "receipts": []
+            }
+        ]
+    },
+    {
+        "name": "Housing",
+        "subcategories": [
+            {
+                "name": "Rent",
+                "budgeted": 800,
+                "receipts": []
+            }
+        ]
+    }
+];
 let categoriesAlt = [];
 let budgetName = "";
 let receipts = [];
@@ -236,7 +257,7 @@ function displayAddReceiptWindow() {
     editWindow.innerHTML = `
         <h3>Add Receipt</h3>
         <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
-        <form id="add-receipt-container">
+        <form id="add-receipt-form">
             <label for="add-receipt-cat">Category</label>
             <select name="category" id="add-receipt-cat" required>
             </select>
@@ -244,10 +265,46 @@ function displayAddReceiptWindow() {
             <select name="subcategory" id="add-receipt-subcat" required>
             </select>
             <label for="add-receipt-total">Total</label>
-            <p>$<input id="add-receipt-total" name="total" type="number" required></p>
+            <span>$<input id="add-receipt-total" name="total" type="float" required></span>
             <label for="add-receipt-memo">Memo</label>
             <input id="add-receipt-memo" name="memo" type="text">
             <button type="submit" id="add-receipt-submit">Submit</button>
         </form>
     `;
+
+    const addReceiptForm = document.getElementById("add-receipt-form");
+    const selectCategory = document.getElementById("add-receipt-cat");
+    const selectSubcategory = document.getElementById("add-receipt-subcat");
+    const totalInput = document.getElementById("add-receipt-total");
+    const memoInput = document.getElementById("add-receipt-memo");
+
+    selectCategory.innerHTMl = "";
+    selectSubcategory.innerHTML = "";
+    for (let i = 0; i < categories.length; i ++) {
+        selectCategory.innerHTML += `
+            <option class="cat-option" value="${i}">${categories[i].name}</option>
+        `;
+    };
+    setSubcategoryOptions(selectCategory.value);
+
+
+    function setSubcategoryOptions(categoryIndex) {
+        selectSubcategory.innerHTML = "";
+        for (let i = 0; i < categories[categoryIndex].subcategories.length; i ++) {
+            selectSubcategory.innerHTML += `
+                <option class="subcat-option" value="${i}">${categories[categoryIndex].subcategories[i].name}</option>
+            `;
+        };
+        console.log(selectSubcategory.innerHTML);
+    }
+
+    selectCategory.addEventListener("change", () => {
+        setSubcategoryOptions(selectCategory.value);
+    });
+    
+    addReceiptForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": totalInput.value, "memo": memoInput.value});
+        console.log(receipts);
+    });
 };
