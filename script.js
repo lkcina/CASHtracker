@@ -16,6 +16,11 @@ let categories = [
                 "name": "Groceries",
                 "budgeted": 200,
                 "receipts": []
+            },
+            {
+                "name": "Restaurants",
+                "budgeted": 100,
+                "receipts": []
             }
         ]
     },
@@ -112,7 +117,43 @@ function setDisplay() {
         };
 
         function budgetCategoriesHtml() {
+            let htmlResult = "";
+            categories.forEach((cat) => {
+                let categoryTotalBudgeted = 0;
+                let categoryTotalSpent = 0;
+                htmlResult += `
+                    <div class="budget-category">
+                        <div class="budget-category-header">${cat.name}</div>
+                `;
 
+                cat.subcategories.forEach((subcat) => {
+                    categoryTotalBudgeted += subcat.budgeted;
+
+                    const subcatReceiptsTotal = subcat.receipts.length > 0 ? parseFloat(subcat.receipts.reduce((a, b) => a + b)) : 0;
+                    categoryTotalSpent += subcatReceiptsTotal;
+
+                    htmlResult += `
+                        <div class="subcategory-container">
+                            <span>${subcat.name}</span>
+                            <span>$<input id="${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted" type="number" min="0" value="${subcat.budgeted}"></span>
+                            <span>$${subcatReceiptsTotal}</span>
+                            <span>$${subcat.budgeted - subcatReceiptsTotal}</span>
+                        </div>
+                    `;
+                });
+
+                htmlResult += `
+                    <div class="category-footer">
+                        <span>Total</span>
+                        <span>$${categoryTotalBudgeted}</span>
+                        <span>$${categoryTotalSpent}</span>
+                        <span>$${categoryTotalBudgeted - categoryTotalSpent}</span>
+                    </div>
+                    </div>
+                `;
+            });
+            console.log(htmlResult);
+            return htmlResult;
         };
 
         const totalBudgetInput = document.getElementById("total-budget");
