@@ -115,6 +115,12 @@ function setDisplay() {
 
         };
 
+        const totalBudgetInput = document.getElementById("total-budget");
+        totalBudgetInput.addEventListener("change", () => {
+            totalBudget = totalBudgetInput.value;
+            setDisplay();
+        });
+
     } else {
         toolbarDiv.style.display = "none";
         budgetContainer.style.display = "none";
