@@ -102,8 +102,19 @@ function setDisplay() {
         `;
 
         function getUnassignedIncome() {
-            
+            let remainingTotal = totalBudget;
+            categories.forEach((cat) => {
+                cat.subcategories.forEach((subcat) => {
+                    remainingTotal -= subcat.budgeted;
+                });
+            });
+            return remainingTotal;
         };
+
+        function budgetCategoriesHtml() {
+
+        };
+
     } else {
         toolbarDiv.style.display = "none";
         budgetContainer.style.display = "none";
