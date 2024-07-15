@@ -129,7 +129,7 @@ function setDisplay() {
                 cat.subcategories.forEach((subcat) => {
                     categoryTotalBudgeted += subcat.budgeted;
 
-                    const subcatReceiptsTotal = subcat.receipts.length > 0 ? parseFloat(subcat.receipts.reduce((a, b) => a + b)) : 0;
+                    const subcatReceiptsTotal = subcat.receipts.length > 0 ? subcat.receipts.reduce((a, b) => parseFloat(a) + parseFloat(b)) : 0;
                     categoryTotalSpent += parseFloat(subcatReceiptsTotal);
 
                     htmlResult += `
