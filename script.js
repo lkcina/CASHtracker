@@ -33,6 +33,7 @@ let categories = [
 let categoriesAlt = [];
 let budgetName = "";
 let receipts = [];
+let totalBudget = 0;
 
 setDisplay();
 
@@ -90,6 +91,19 @@ function setDisplay() {
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
         budgetNameInput.value = budgetName;
+
+        budgetContainer.innerHTML = `
+            <label for="total-budget">Total Budget</label>
+            <input id="total-budget" type="number" value="${totalBudget}" min="0">
+            <div id="budget-remainder">Unassigned Income: ${getUnassignedIncome()}</div>
+            <div id="budget-categories-container">
+                ${budgetCategoriesHtml()}
+            </div>
+        `;
+
+        function getUnassignedIncome() {
+            
+        };
     } else {
         toolbarDiv.style.display = "none";
         budgetContainer.style.display = "none";
