@@ -130,7 +130,7 @@ function setDisplay() {
                     categoryTotalBudgeted += subcat.budgeted;
 
                     const subcatReceiptsTotal = subcat.receipts.length > 0 ? parseFloat(subcat.receipts.reduce((a, b) => a + b)) : 0;
-                    categoryTotalSpent += subcatReceiptsTotal;
+                    categoryTotalSpent += parseFloat(subcatReceiptsTotal);
 
                     htmlResult += `
                         <div class="subcategory-container">
@@ -152,14 +152,23 @@ function setDisplay() {
                     </div>
                 `;
             });
-            console.log(htmlResult);
             return htmlResult;
         };
 
         const totalBudgetInput = document.getElementById("total-budget");
         totalBudgetInput.addEventListener("change", () => {
-            totalBudget = totalBudgetInput.value;
+            totalBudget = parseFloat(totalBudgetInput.value);
             setDisplay();
+        });
+
+        categories.forEach((cat) => {
+            cat.subcategories.forEach((subcat) => {
+                const subcatBudgetedInput = document.getElementById(`${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted`);
+                subcatBudgetedInput.addEventListener("change", () => {
+                    subcat.budgeted = parseFloat(subcatBudgetedInput.value);
+                    setDisplay();
+                });
+            });
         });
 
     } else {
