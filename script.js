@@ -7,10 +7,32 @@ const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 
-let isCurrentBudget = false;
-let categories = [];
+let isCurrentBudget = true;
+let categories = [    
+    {
+        "name": "Food",
+        "subcategories": [
+            {
+                "name": "Groceries",
+                "budgeted": 200,
+                "receipts": []
+            }
+        ]
+    },
+    {
+        "name": "Housing",
+        "subcategories": [
+            {
+                "name": "Rent",
+                "budgeted": 800,
+                "receipts": []
+            }
+        ]
+    }
+];
 let categoriesAlt = [];
 let budgetName = "";
+let receipts = [];
 
 setDisplay();
 
@@ -51,11 +73,16 @@ newBudgetBtn.forEach((btn) => {
     });
 });
 
-editCatBtn.addEventListener("click", ()=> {
+editCatBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
     displayEditCatWindow(false);
 });
+
+addReceiptBtn.addEventListener("click", () => {
+    editWindow.style.display = "block";
+    displayAddReceiptWindow();
+})
 
 function setDisplay() {
     if (isCurrentBudget) {
@@ -226,3 +253,84 @@ function displayEditCatWindow(isRequired) {
     });
 };
 
+function displayAddReceiptWindow() {
+    editWindow.innerHTML = `
+        <h3>Add Receipt</h3>
+        <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
+        <form id="add-receipt-form">
+            <label for="add-receipt-cat">Category</label>
+            <select name="category" id="add-receipt-cat" required>
+            </select>
+            <label for="add-receipt-subcat">Subcategory</label>
+            <select name="subcategory" id="add-receipt-subcat" required>
+            </select>
+            <label for="add-receipt-total">Total</label>
+            <span>$<input id="add-receipt-total" name="total" type="float" required></span>
+            <label for="add-receipt-memo">Memo</label>
+            <input id="add-receipt-memo" name="memo" type="text">
+            <button type="submit" id="add-receipt-submit">Submit</button>
+        </form>
+    `;
+
+    const addReceiptForm = document.getElementById("add-receipt-form");
+    const selectCategory = document.getElementById("add-receipt-cat");
+    const selectSubcategory = document.getElementById("add-receipt-subcat");
+    const totalInput = document.getElementById("add-receipt-total");
+    const memoInput = document.getElementById("add-receipt-memo");
+
+    selectCategory.innerHTMl = "";
+    for (let i = 0; i < categories.length; i ++) {
+        selectCategory.innerHTML += `
+            <option class="cat-option" value="${i}">${categories[i].name}</option>
+        `;
+    };
+    setSubcategoryOptions(selectCategory.value);
+
+
+    function setSubcategoryOptions(categoryIndex) {
+        selectSubcategory.innerHTML = "";
+        for (let i = 0; i < categories[categoryIndex].subcategories.length; i ++) {
+            selectSubcategory.innerHTML += `
+                <option class="subcat-option" value="${i}">${categories[categoryIndex].subcategories[i].name}</option>
+            `;
+        };
+    }
+
+    selectCategory.addEventListener("change", () => {
+        setSubcategoryOptions(selectCategory.value);
+    });
+    
+    addReceiptForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": totalInput.value, "memo": memoInput.value});
+        syncReceipts();
+        editWindow.style.diplay = "none";
+        editWindow.innerHTML = "";
+        alert("Receipt Added!");
+        setDisplay();
+    });
+
+    const cancelBtn = document.getElementById("add-receipt-cancel-btn");
+    cancelBtn.addEventListener("click", () => {
+        const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+                
+        if (cancel) {
+            editWindow.style.display = "none";
+            editWindow.innerHTML = "";
+        } else {
+            return;
+        };
+    })
+};
+
+function syncReceipts() {
+    categories.forEach((category) => {
+        category.subcategories.forEach((subcategory) => {
+            subcategory.receipts = [];
+        })
+    })
+
+    receipts.forEach((receipt) => {
+        categories[receipt.category].subcategories[receipt.subcategory].receipts.push(receipt.total);
+    });
+};
