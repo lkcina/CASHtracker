@@ -306,7 +306,7 @@ function displayAddReceiptWindow() {
         syncReceipts();
         editWindow.style.diplay = "none";
         editWindow.innerHTML = "";
-        console.log(categories);
+        alert("Receipt Added!");
         setDisplay();
     });
 
