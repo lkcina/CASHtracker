@@ -86,6 +86,10 @@ editCatBtn.addEventListener("click", () => {
     displayEditCatWindow(false);
 });
 
+budgetNameInput.addEventListener("change", () => {
+    budgetName = budgetNameInput.value;
+});
+
 saveBudgetBtn.addEventListener("click", () => {
     if (confirm("Are you sure you want to save your changes? This cannot be undone.")) {
         localStorage.clear()
