@@ -6,6 +6,7 @@ const toolbarDiv = document.getElementById("toolbar");
 const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
+const saveBudgetBtn = document.getElementById("save-budget-btn");
 
 let isCurrentBudget = true;
 let categories = [    
@@ -85,10 +86,23 @@ editCatBtn.addEventListener("click", () => {
     displayEditCatWindow(false);
 });
 
+saveBudgetBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to save your changes? This cannot be undone.")) {
+        localStorage.clear()
+        localStorage.setItem("currentBudget", JSON.stringify(isCurrentBudget));
+        localStorage.setItem("budgetName", budgetName);
+        localStorage.setItem("totalBudget", totalBudget);
+        localStorage.setItem("categories", JSON.stringify(categories));
+        localStorage.setItem("receipts", JSON.stringify(receipts));
+    } else {
+        return;
+    };
+});
+
 addReceiptBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     displayAddReceiptWindow();
-})
+});
 
 function setDisplay() {
     if (isCurrentBudget) {
@@ -219,8 +233,6 @@ function setDisplay() {
         budgetPlaceholder.style.display = "block";
     };
 };
-
-
 
 function displayEditCatWindow(isRequired) {
     editWindow.innerHTML = `
