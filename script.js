@@ -17,6 +17,11 @@ let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.
 
 setDisplay();
 
+window.addEventListener("beforeunload", (event) => {
+    event.preventDefault();
+    return true;
+})
+
 newBudgetBtn.forEach((btn) => {
     btn.addEventListener("click", () => {        
         editWindow.style.display = "block";
