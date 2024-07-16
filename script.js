@@ -98,13 +98,27 @@ function setDisplay() {
         budgetNameInput.value = budgetName;
 
         budgetContainer.innerHTML = `
-            <label for="total-budget">Total Budget</label>
-            <input id="total-budget" type="number" value="${totalBudget}" min="0">
-            <div id="budget-remainder">Unassigned Income: ${getUnassignedIncome()}</div>
+            <div id="budget-header-container">
+                <label for="total-budget">Total Budget</label>
+                <input id="total-budget" type="number" value="${totalBudget}" min="0">
+                <div id="budget-assigned">Assigned Income: ${getAssignedIncome()}</div>
+                <div id="budget-remainder">Unassigned Income: ${getUnassignedIncome()}</div>
+                <div id="total-expenses">Total Expenses: ${getTotalExpenses()}</div>
+            </div>
             <div id="budget-categories-container">
                 ${budgetCategoriesHtml()}
             </div>
         `;
+
+        function getAssignedIncome() {
+            let assignedTotal = 0;
+            categories.forEach((cat) => {
+                cat.subcategories.forEach((subcat) => {
+                    assignedTotal += subcat.budgeted;
+                });
+            });
+            return assignedTotal;
+        }
 
         function getUnassignedIncome() {
             let remainingTotal = totalBudget;
@@ -116,42 +130,64 @@ function setDisplay() {
             return remainingTotal;
         };
 
+        function getTotalExpenses() {
+            let totalExpenses = 0;
+            if (categories.length > 0) {
+                categories.forEach((cat) => {
+                    if (cat.subcategories.length > 0) {
+                        cat.subcategories.forEach((subcat) => {
+                            totalExpenses += subcat.receipts.length > 0 ? subcat.receipts.reduce((a, b) => a + b) : 0;
+                        });
+                    };
+                    
+                });
+            };
+            
+            return totalExpenses;
+        };
+
         function budgetCategoriesHtml() {
             let htmlResult = "";
-            categories.forEach((cat) => {
-                let categoryTotalBudgeted = 0;
-                let categoryTotalSpent = 0;
-                htmlResult += `
-                    <div class="budget-category">
-                        <div class="budget-category-header">${cat.name}</div>
-                `;
-
-                cat.subcategories.forEach((subcat) => {
-                    categoryTotalBudgeted += subcat.budgeted;
-
-                    const subcatReceiptsTotal = subcat.receipts.length > 0 ? subcat.receipts.reduce((a, b) => parseFloat(a) + parseFloat(b)) : 0;
-                    categoryTotalSpent += parseFloat(subcatReceiptsTotal);
-
+            if (categories.length > 0) {
+                categories.forEach((cat) => {
+                    let categoryTotalBudgeted = 0;
+                    let categoryTotalSpent = 0;
                     htmlResult += `
-                        <div class="subcategory-container">
-                            <span>${subcat.name}</span>
-                            <span>$<input id="${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted" type="number" min="0" value="${subcat.budgeted}"></span>
-                            <span>$${subcatReceiptsTotal}</span>
-                            <span>$${subcat.budgeted - subcatReceiptsTotal}</span>
+                        <div class="budget-category">
+                            <div class="budget-category-header">${cat.name}</div>
+                    `;
+                    
+                    if (cat.subcategories.length > 0) {
+                        cat.subcategories.forEach((subcat) => {
+                            categoryTotalBudgeted += subcat.budgeted;
+        
+                            const subcatReceiptsTotal = subcat.receipts.length > 0 ? subcat.receipts.reduce((a, b) => a + b) : 0;
+                            categoryTotalSpent += parseFloat(subcatReceiptsTotal);
+        
+                            htmlResult += `
+                                <div class="subcategory-container">
+                                    <span>${subcat.name}</span>
+                                    <span>$<input id="${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted" type="number" min="0" value="${subcat.budgeted}"></span>
+                                    <span>$${subcatReceiptsTotal}</span>
+                                    <span>$${subcat.budgeted - subcatReceiptsTotal}</span>
+                                </div>
+                            `;
+                        });
+                    };
+                    
+    
+                    htmlResult += `
+                        <div class="category-footer">
+                            <span>Total</span>
+                            <span>$${categoryTotalBudgeted}</span>
+                            <span>$${categoryTotalSpent}</span>
+                            <span>$${categoryTotalBudgeted - categoryTotalSpent}</span>
+                        </div>
                         </div>
                     `;
                 });
-
-                htmlResult += `
-                    <div class="category-footer">
-                        <span>Total</span>
-                        <span>$${categoryTotalBudgeted}</span>
-                        <span>$${categoryTotalSpent}</span>
-                        <span>$${categoryTotalBudgeted - categoryTotalSpent}</span>
-                    </div>
-                    </div>
-                `;
-            });
+            };
+            
             return htmlResult;
         };
 
@@ -161,15 +197,21 @@ function setDisplay() {
             setDisplay();
         });
 
-        categories.forEach((cat) => {
-            cat.subcategories.forEach((subcat) => {
-                const subcatBudgetedInput = document.getElementById(`${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted`);
-                subcatBudgetedInput.addEventListener("change", () => {
-                    subcat.budgeted = parseFloat(subcatBudgetedInput.value);
-                    setDisplay();
-                });
+        if (categories.length > 0) {
+            categories.forEach((cat) => {
+                if (cat.subcategories.length > 0) {
+                    cat.subcategories.forEach((subcat) => {
+                        const subcatBudgetedInput = document.getElementById(`${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted`);
+                        subcatBudgetedInput.addEventListener("change", () => {
+                            subcat.budgeted = parseFloat(subcatBudgetedInput.value);
+                            setDisplay();
+                        });
+                    });
+                };
+                
             });
-        });
+        };
+        
 
     } else {
         toolbarDiv.style.display = "none";
@@ -383,7 +425,7 @@ function displayAddReceiptWindow() {
     
     addReceiptForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": totalInput.value, "memo": memoInput.value});
+        receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": parseFloat(totalInput.value), "memo": memoInput.value});
         syncReceipts();
         editWindow.style.diplay = "none";
         editWindow.innerHTML = "";
