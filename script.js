@@ -8,38 +8,12 @@ const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 const saveBudgetBtn = document.getElementById("save-budget-btn");
 
-let isCurrentBudget = true;
-let categories = [    
-    {
-        "name": "Food",
-        "subcategories": [
-            {
-                "name": "Groceries",
-                "budgeted": 200,
-                "receipts": []
-            },
-            {
-                "name": "Restaurants",
-                "budgeted": 100,
-                "receipts": []
-            }
-        ]
-    },
-    {
-        "name": "Housing",
-        "subcategories": [
-            {
-                "name": "Rent",
-                "budgeted": 800,
-                "receipts": []
-            }
-        ]
-    }
-];
+let isCurrentBudget = localStorage.getItem("currentBudget") ? JSON.parse(localStorage.getItem("currentBudget")) : false;
+let categories = localStorage.getItem("categories") ? JSON.parse(localStorage.getItem("categories")) : [];
 let categoriesAlt = [];
-let budgetName = "";
-let receipts = [];
-let totalBudget = 0;
+let budgetName = localStorage.getItem("budgetName") ? localStorage.getItem("budgetName") : "";
+let receipts = localStorage.getItem("receipts") ? JSON.parse(localStorage.getItem("receipts")) : [];
+let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.getItem("totalBudget")) : 0;
 
 setDisplay();
 
@@ -95,7 +69,7 @@ saveBudgetBtn.addEventListener("click", () => {
         localStorage.clear()
         localStorage.setItem("currentBudget", JSON.stringify(isCurrentBudget));
         localStorage.setItem("budgetName", budgetName);
-        localStorage.setItem("totalBudget", totalBudget);
+        localStorage.setItem("totalBudget", JSON.stringify(totalBudget));
         localStorage.setItem("categories", JSON.stringify(categories));
         localStorage.setItem("receipts", JSON.stringify(receipts));
     } else {
