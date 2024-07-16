@@ -92,10 +92,10 @@ function setDisplay() {
         budgetContainer.innerHTML = `
             <div id="budget-header-container">
                 <label for="total-budget">Total Budget</label>
-                <input id="total-budget" type="number" value="${totalBudget}" min="0">
-                <div id="budget-assigned">Assigned Income: ${getAssignedIncome()}</div>
-                <div id="budget-remainder">Unassigned Income: ${getUnassignedIncome()}</div>
-                <div id="total-expenses">Total Expenses: ${getTotalExpenses()}</div>
+                <span>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></span>
+                <div id="budget-assigned">Assigned Income: $${getAssignedIncome().toFixed(2)}</div>
+                <div id="budget-remainder">Unassigned Income: $${getUnassignedIncome().toFixed(2)}</div>
+                <div id="total-expenses">Total Expenses: $${getTotalExpenses().toFixed(2)}</div>
             </div>
             <div id="budget-categories-container">
                 ${budgetCategoriesHtml()}
@@ -160,8 +160,8 @@ function setDisplay() {
                                 <div class="subcategory-container">
                                     <span>${subcat.name}</span>
                                     <span>$<input id="${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted" type="number" min="0" value="${subcat.budgeted}"></span>
-                                    <span>$${subcatReceiptsTotal}</span>
-                                    <span>$${subcat.budgeted - subcatReceiptsTotal}</span>
+                                    <span>$${subcatReceiptsTotal.toFixed(2)}</span>
+                                    <span>$${(subcat.budgeted - subcatReceiptsTotal).toFixed(2)}</span>
                                 </div>
                             `;
                         });
@@ -171,9 +171,9 @@ function setDisplay() {
                     htmlResult += `
                         <div class="category-footer">
                             <span>Total</span>
-                            <span>$${categoryTotalBudgeted}</span>
-                            <span>$${categoryTotalSpent}</span>
-                            <span>$${categoryTotalBudgeted - categoryTotalSpent}</span>
+                            <span>$${categoryTotalBudgeted.toFixed(2)}</span>
+                            <span>$${categoryTotalSpent.toFixed(2)}</span>
+                            <span>$${(categoryTotalBudgeted - categoryTotalSpent).toFixed(2)}</span>
                         </div>
                         </div>
                     `;
