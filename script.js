@@ -6,41 +6,21 @@ const toolbarDiv = document.getElementById("toolbar");
 const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
+const saveBudgetBtn = document.getElementById("save-budget-btn");
 
-let isCurrentBudget = true;
-let categories = [    
-    {
-        "name": "Food",
-        "subcategories": [
-            {
-                "name": "Groceries",
-                "budgeted": 200,
-                "receipts": []
-            },
-            {
-                "name": "Restaurants",
-                "budgeted": 100,
-                "receipts": []
-            }
-        ]
-    },
-    {
-        "name": "Housing",
-        "subcategories": [
-            {
-                "name": "Rent",
-                "budgeted": 800,
-                "receipts": []
-            }
-        ]
-    }
-];
+let isCurrentBudget = localStorage.getItem("currentBudget") ? JSON.parse(localStorage.getItem("currentBudget")) : false;
+let categories = localStorage.getItem("categories") ? JSON.parse(localStorage.getItem("categories")) : [];
 let categoriesAlt = [];
-let budgetName = "";
-let receipts = [];
-let totalBudget = 0;
+let budgetName = localStorage.getItem("budgetName") ? localStorage.getItem("budgetName") : "";
+let receipts = localStorage.getItem("receipts") ? JSON.parse(localStorage.getItem("receipts")) : [];
+let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.getItem("totalBudget")) : 0;
 
 setDisplay();
+
+window.addEventListener("beforeunload", (event) => {
+    event.preventDefault();
+    return true;
+})
 
 newBudgetBtn.forEach((btn) => {
     btn.addEventListener("click", () => {        
@@ -85,10 +65,27 @@ editCatBtn.addEventListener("click", () => {
     displayEditCatWindow(false);
 });
 
+budgetNameInput.addEventListener("change", () => {
+    budgetName = budgetNameInput.value;
+});
+
+saveBudgetBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to save your changes? This cannot be undone.")) {
+        localStorage.clear()
+        localStorage.setItem("currentBudget", JSON.stringify(isCurrentBudget));
+        localStorage.setItem("budgetName", budgetName);
+        localStorage.setItem("totalBudget", JSON.stringify(totalBudget));
+        localStorage.setItem("categories", JSON.stringify(categories));
+        localStorage.setItem("receipts", JSON.stringify(receipts));
+    } else {
+        return;
+    };
+});
+
 addReceiptBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     displayAddReceiptWindow();
-})
+});
 
 function setDisplay() {
     if (isCurrentBudget) {
@@ -100,10 +97,10 @@ function setDisplay() {
         budgetContainer.innerHTML = `
             <div id="budget-header-container">
                 <label for="total-budget">Total Budget</label>
-                <input id="total-budget" type="number" value="${totalBudget}" min="0">
-                <div id="budget-assigned">Assigned Income: ${getAssignedIncome()}</div>
-                <div id="budget-remainder">Unassigned Income: ${getUnassignedIncome()}</div>
-                <div id="total-expenses">Total Expenses: ${getTotalExpenses()}</div>
+                <span>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></span>
+                <div id="budget-assigned">Assigned Income: $${getAssignedIncome().toFixed(2)}</div>
+                <div id="budget-remainder">Unassigned Income: $${getUnassignedIncome().toFixed(2)}</div>
+                <div id="total-expenses">Total Expenses: $${getTotalExpenses().toFixed(2)}</div>
             </div>
             <div id="budget-categories-container">
                 ${budgetCategoriesHtml()}
@@ -168,8 +165,8 @@ function setDisplay() {
                                 <div class="subcategory-container">
                                     <span>${subcat.name}</span>
                                     <span>$<input id="${subcat.name.toLowerCase().replace(/\s/g, "-")}-budgeted" type="number" min="0" value="${subcat.budgeted}"></span>
-                                    <span>$${subcatReceiptsTotal}</span>
-                                    <span>$${subcat.budgeted - subcatReceiptsTotal}</span>
+                                    <span>$${subcatReceiptsTotal.toFixed(2)}</span>
+                                    <span>$${(subcat.budgeted - subcatReceiptsTotal).toFixed(2)}</span>
                                 </div>
                             `;
                         });
@@ -179,9 +176,9 @@ function setDisplay() {
                     htmlResult += `
                         <div class="category-footer">
                             <span>Total</span>
-                            <span>$${categoryTotalBudgeted}</span>
-                            <span>$${categoryTotalSpent}</span>
-                            <span>$${categoryTotalBudgeted - categoryTotalSpent}</span>
+                            <span>$${categoryTotalBudgeted.toFixed(2)}</span>
+                            <span>$${categoryTotalSpent.toFixed(2)}</span>
+                            <span>$${(categoryTotalBudgeted - categoryTotalSpent).toFixed(2)}</span>
                         </div>
                         </div>
                     `;
@@ -219,8 +216,6 @@ function setDisplay() {
         budgetPlaceholder.style.display = "block";
     };
 };
-
-
 
 function displayEditCatWindow(isRequired) {
     editWindow.innerHTML = `
