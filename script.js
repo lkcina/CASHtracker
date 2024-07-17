@@ -89,7 +89,7 @@ addReceiptBtn.addEventListener("click", () => {
 
 function setDisplay() {
     if (isCurrentBudget) {
-        toolbarDiv.style.display = "block";
+        toolbarDiv.style.display = "flex";
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
         budgetNameInput.value = budgetName;
