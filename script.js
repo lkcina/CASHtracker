@@ -69,6 +69,39 @@ budgetNameInput.addEventListener("change", () => {
     budgetName = budgetNameInput.value;
 });
 
+budgetNameInput.addEventListener("input", budgetNameFontSize);
+window.addEventListener("mousemove", budgetNameFontSize);
+
+function budgetNameFontSize() {
+    let newFontSize = parseInt(window.getComputedStyle(budgetNameInput).fontSize.replace(/a-z/, ""));
+    if (newFontSize < 35) {
+        budgetNameInput.style.textShadow = "1px 1px 1px rgba(30, 30, 30, 0.9)";
+    } else if (newFontSize < 50) {
+        budgetNameInput.style.textShadow = "2px 2px 2px rgba(30, 30, 30, 0.9)";
+    } else {
+        budgetNameInput.style.textShadow = "3px 3px 3px rgba(30, 30, 30, 0.9)";
+    };
+
+    if (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+        while (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+            newFontSize -= 1;
+            budgetNameInput.style.fontSize = `${newFontSize}px`;
+        };
+    } else if (newFontSize < 80) {
+        while (newFontSize < 80) {
+            newFontSize += 1;
+            budgetNameInput.style.fontSize = `${newFontSize}px`;
+            
+            if (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+                newFontSize -= 1;
+                budgetNameInput.style.fontSize = `${newFontSize}px`;
+                return;
+            }
+        };
+    
+    };
+};
+
 saveBudgetBtn.addEventListener("click", () => {
     if (confirm("Are you sure you want to save your changes? This cannot be undone.")) {
         localStorage.clear()

@@ -100,7 +100,7 @@ button:hover {
 
 #budget-name {
     width: 50%;
-
+    min-width: 300px;
     height: auto;
     background-color: transparent;;
     border-radius: 0;
