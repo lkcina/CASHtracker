@@ -85,7 +85,7 @@ button:hover {
     width: calc(100vw - 40px);
     max-width: 1250px;
     height: 100px;
-    padding: 10px;
+    padding: 20px;
     margin: 0 auto 2px;
     background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
     box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
@@ -102,7 +102,8 @@ button:hover {
     width: 50%;
     min-width: 300px;
     height: auto;
-    background-color: transparent;;
+    background-color: transparent;
+    border: none;
     border-radius: 0;
     font-family: "Nova Mono", sans-serif;
     font-size: 8rem;
@@ -111,6 +112,10 @@ button:hover {
     vertical-align: super;
     text-shadow: 3px 3px 3px rgba(30, 30, 30, 0.9);
     overflow: scroll;
+}
+
+#budget-name:focus {
+    height: 90px;
 }
 
 #edit-window {
