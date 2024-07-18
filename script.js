@@ -129,11 +129,11 @@ function setDisplay() {
 
         budgetContainer.innerHTML = `
             <div id="budget-header-container">
-                <label for="total-budget">Total Budget</label>
-                <span>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></span>
-                <div id="budget-assigned">Assigned Income: $${getAssignedIncome().toFixed(2)}</div>
-                <div id="budget-remainder">Unassigned Income: $${getUnassignedIncome().toFixed(2)}</div>
-                <div id="total-expenses">Total Expenses: $${getTotalExpenses().toFixed(2)}</div>
+                
+                <div class="header-item"><label for="total-budget">Total Budget</label><hr><p>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></p></div>
+                <div id="budget-assigned" class="header-item">Assigned Income<hr><p>$${getAssignedIncome().toFixed(2)}</p></div>
+                <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
+                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
             </div>
             <div id="budget-categories-container">
                 ${budgetCategoriesHtml()}

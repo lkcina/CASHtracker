@@ -86,7 +86,7 @@ button:hover {
     max-width: 1250px;
     height: 100px;
     padding: 20px;
-    margin: 0 auto 2px;
+    margin: 0 auto 20px;
     background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
     box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
     display: none;
@@ -124,8 +124,65 @@ button:hover {
 }
 
 #budget-container {
-    border: 1px solid black;
+    width: calc(100vw - 80px);
+    max-width: 1000px;
+    height: auto;
+    padding: 20px;
+    margin: 0 auto 20px;
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
+    box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
     display: none;
+}
+
+#budget-header-container {
+    width: auto;
+    height: 100px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(180deg, rgb(180, 180, 180), rgb(145, 145, 145));
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#budget-header-container div, #budget-header-container label {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: rgb(255, 255, 255);
+}
+
+#budget-header-container hr {
+    width: 200px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+.header-item p {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.header-item:first-of-type p {
+    font-size: 3.5rem;
+    vertical-align: super;
+}
+
+#budget-header-container input {
+    width: 180px;
+    height: 40px;
+    font-family: "Nova Mono",sans-serif;
+    font-size: 3.5rem;
+    background-color: linear-gradient(180deg, rgb(180, 180, 180), rgb(145, 145, 145));;
+    border: none;
+    color: rgb(43, 144, 134);
+    text-shadow: 2px 2px 2px rgba(30, 30, 30, 0.9);
+}
+
+.budget-category {
+    width: calc(50% - 10px);
+    border: 5px solid rgb(145, 145, 145);
 }
 
 .category {
