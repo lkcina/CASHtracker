@@ -135,7 +135,7 @@ function setDisplay() {
                 <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
                 <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
             </div>
-            <div id="budget-categories-container">
+            <div id="budget-categories-container" data-masonry="{ 'itemSelector': '.budget-category', 'columnWidth': 'calc(50% - 10px)' }">
                 ${budgetCategoriesHtml()}
             </div>
         `;
@@ -227,6 +227,10 @@ function setDisplay() {
             
             return htmlResult;
         };
+
+        const budgetCatContainer = new Masonry("#budget-categories-container", {
+            "itemSelector": ".budget-category"
+        });
 
         const totalBudgetInput = document.getElementById("total-budget");
         totalBudgetInput.addEventListener("change", () => {
