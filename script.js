@@ -185,6 +185,12 @@ function setDisplay() {
                     htmlResult += `
                         <div class="budget-category">
                             <div class="budget-category-header">${cat.name}</div>
+                            <div class="budget-category-table-heads">
+                                <span>Subcategory</span>
+                                <span>Budgeted</span>
+                                <span>Spent</span>
+                                <span>Remaining</span>
+                            </div>
                     `;
                     
                     if (cat.subcategories.length > 0) {
@@ -201,6 +207,7 @@ function setDisplay() {
                                     <span>$${subcatReceiptsTotal.toFixed(2)}</span>
                                     <span>$${(subcat.budgeted - subcatReceiptsTotal).toFixed(2)}</span>
                                 </div>
+                                <hr>
                             `;
                         });
                     };
