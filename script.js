@@ -29,12 +29,13 @@ newBudgetBtn.forEach((btn) => {
         document.querySelector("body").style.overflow = "hidden";
         editDialog.innerHTML = `
             <h3>Budget Name</h3>
-            <button class="edit-window-cancel-btn" id="new-budget-cancel-btn">X</button>
+            <hr class="edit-dialog-title-divider">
+            <button class="edit-window-cancel-btn"></button>
             <input id="new-budget-name" type="text">
             <button id="new-budget-continue-btn">Continue</button>
         `;
-    
-        const cancelBtn = document.getElementById("new-budget-cancel-btn");
+
+        const cancelBtn = document.querySelector(".edit-window-cancel-btn");
         cancelBtn.addEventListener("click", () => {
             editWindow.style.display = "none";
             editDialog.innerHTML = "";
@@ -269,10 +270,11 @@ function setDisplay() {
 function displayEditCatWindow(isRequired) {
     editDialog.innerHTML = `
     <h3>Categories</h3>
-    <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
+    <hr class="edit-dialog-title-divider">
+    <button class="edit-window-cancel-btn"></button>
     <div id="edit-cat-container">
         ${editCatHtml()}
-        <button id="add-category-btn">+ New Category</button>
+        <p id="add-category-btn">+ New Category</p>
     </div>
     
     <button id="edit-cat-confirm-btn">Confirm Changes</button>
@@ -288,7 +290,7 @@ function displayEditCatWindow(isRequired) {
             htmlResult += `
                 <div class="edit-cat-category">
                     <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}">
-                    <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn">X</button>
+                    <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn"></button>
                     <div class="edit-cat-subcat-container">
             `;
     
@@ -297,14 +299,14 @@ function displayEditCatWindow(isRequired) {
     
                 htmlResult += `
                     <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}"</input>
-                    <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn">X</button>
+                    <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn"></button>
                 `;
 
                 
             });
     
             htmlResult += `
-                        <button class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</button>
+                        <p class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</p>
                     </div>
                 </div>
             `;
@@ -362,7 +364,7 @@ function displayEditCatWindow(isRequired) {
     });
 
     // Cancel Button Event Listener
-    const cancelBtn = document.getElementById("edit-cat-cancel-btn");
+    const cancelBtn = document.querySelector(".edit-window-cancel-btn");
     if (isRequired) {
         cancelBtn.style.display = "none";
     } else {
@@ -424,8 +426,9 @@ function displayEditCatWindow(isRequired) {
 
 function displayAddReceiptWindow() {
     editDialog.innerHTML = `
-        <h3>Add Receipt</h3>
-        <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
+        <h3>New Receipt</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
         <form id="add-receipt-form">
             <label for="add-receipt-cat">Category</label>
             <select name="category" id="add-receipt-cat" required>
@@ -479,7 +482,7 @@ function displayAddReceiptWindow() {
         setDisplay();
     });
 
-    const cancelBtn = document.getElementById("add-receipt-cancel-btn");
+    const cancelBtn = document.querySelector(".edit-window-cancel-btn");
     cancelBtn.addEventListener("click", () => {
         const cancel = confirm("Are you sure you want to close the window and lose your changes?");
                 

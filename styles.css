@@ -135,8 +135,10 @@ button:hover {
 
 #edit-dialog {
     width: 400px;
-    height: 80%;
+    height: auto;
+    min-height: 200px;
     max-height: 70vh;
+    padding: 10px;
     overflow-y: scroll;
     background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
     box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
@@ -146,8 +148,54 @@ button:hover {
 }
 
 #edit-dialog h3 {
-    
+    font-family: "Nova Mono", sans-serif;
+    font-size: 3.5rem;
+    text-align: center;
+    color: rgb(43, 144, 134);
+    text-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
 }
+
+.edit-dialog-title-divider {
+    height: 3px;
+    width: 90%;
+    margin: 0 auto 20px;
+    background-color: rgb(43, 144, 134);
+    border: none;
+    box-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
+}
+
+.edit-window-cancel-btn, .edit-cat-del-cat-btn, .edit-cat-del-sub-btn {
+    background-image: url(./Icons/close_24dp_919191_FILL0_wght700_GRAD0_opsz24.svg);
+    background-size: cover;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+}
+
+.edit-window-cancel-btn {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.edit-cat-del-cat-btn {
+    width: 25px;
+    height: 25px;
+}
+
+.edit-cat-del-sub-btn {
+    width: 20px;
+    height: 20px;
+}
+
+.edit-window-cancel-btn:hover, .edit-cat-del-cat-btn:hover, .edit-cat-del-sub-btn:hover {
+    border: none;
+    background-image: url(./Icons/close_24dp_912828_FILL0_wght700_GRAD0_opsz24.svg);
+}
+
+
 
 #budget-container {
     width: calc(100vw - 80px);
