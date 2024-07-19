@@ -193,7 +193,7 @@ button:hover {
 }
 
 .budget-category {
-    width: calc(50% - 10px);
+    width: 480px;
     height: max-content;
     margin: 10px 5px;
     border: 5px solid rgb(145, 145, 145);

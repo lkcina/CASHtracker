@@ -468,8 +468,8 @@ function displayAddReceiptWindow() {
         syncReceipts();
         editWindow.style.diplay = "none";
         editWindow.innerHTML = "";
-        alert("Receipt Added!");
         setDisplay();
+        alert("Receipt Added!");
     });
 
     const cancelBtn = document.getElementById("add-receipt-cancel-btn");
