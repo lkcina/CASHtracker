@@ -319,7 +319,40 @@ button:hover {
 
 /* ---------- ADD RECEIPT ---------- */
 
+.form-field {
+    width: 90%;
+    margin: 0 auto 20px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid rgb(145, 145, 145);
+}
 
+.form-field label {
+    font-family: "Nova Mono", sans-serif;
+    font-size: 2rem;
+    color: rgb(145, 145, 145);
+}
+
+.form-field select, .form-field span, .form-field input {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: rgb(30, 30, 30);
+    border: none;
+}
+
+.form-field select, .form-field input {
+    width: 180px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+}
+
+#add-receipt-submit {
+    display: block;
+    margin: 0 auto;
+    font-size: 2rem;
+}
 
 /* ---------- BUDGET ---------- */
 

@@ -443,7 +443,7 @@ function displayAddReceiptWindow() {
             </div>
             <div class="form-field">
                 <label for="add-receipt-total">Total</label>
-                <span>$<input id="add-receipt-total" name="total" type="float" required></span>
+                <span>$<input id="add-receipt-total" name="total" type="number" required></span>
             </div>
             <div class="form-field">
                 <label for="add-receipt-memo">Memo</label>
