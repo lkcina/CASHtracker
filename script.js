@@ -1,5 +1,6 @@
 const editCatBtn = document.getElementById("edit-cat-btn");
 const editWindow = document.getElementById("edit-window");
+const editDialog = document.getElementById("edit-dialog");
 const budgetContainer = document.getElementById("budget-container");
 const budgetPlaceholder = document.getElementById("budget-placeholder");
 const toolbarDiv = document.getElementById("toolbar");
@@ -25,8 +26,9 @@ window.addEventListener("beforeunload", (event) => {
 newBudgetBtn.forEach((btn) => {
     btn.addEventListener("click", () => {        
         editWindow.style.display = "block";
-        editWindow.innerHTML = `
-            <h3>Budget Name </h3>
+        document.querySelector("body").style.overflow = "hidden";
+        editDialog.innerHTML = `
+            <h3>Budget Name</h3>
             <button class="edit-window-cancel-btn" id="new-budget-cancel-btn">X</button>
             <input id="new-budget-name" type="text">
             <button id="new-budget-continue-btn">Continue</button>
@@ -35,7 +37,8 @@ newBudgetBtn.forEach((btn) => {
         const cancelBtn = document.getElementById("new-budget-cancel-btn");
         cancelBtn.addEventListener("click", () => {
             editWindow.style.display = "none";
-            editWindow.innerHTML = "";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
         });
 
         const continueBtn = document.getElementById("new-budget-continue-btn");
@@ -61,6 +64,7 @@ newBudgetBtn.forEach((btn) => {
 
 editCatBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
+    document.querySelector("body").style.overflow = "hidden";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
     displayEditCatWindow(false);
 });
@@ -117,6 +121,7 @@ saveBudgetBtn.addEventListener("click", () => {
 
 addReceiptBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
+    document.querySelector("body").style.overflow = "hidden";
     displayAddReceiptWindow();
 });
 
@@ -262,7 +267,7 @@ function setDisplay() {
 };
 
 function displayEditCatWindow(isRequired) {
-    editWindow.innerHTML = `
+    editDialog.innerHTML = `
     <h3>Categories</h3>
     <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
     <div id="edit-cat-container">
@@ -369,14 +374,16 @@ function displayEditCatWindow(isRequired) {
                 if (cancel) {
                     categoriesAlt = [];
                     editWindow.style.display = "none";
-                    editWindow.innerHTML = "";
+                    editDialog.innerHTML = "";
+                    document.querySelector("body").style.overflow = "scroll";
                 } else {
                     displayEditCatWindow(isRequired);
                 };
             } else {
                 categoriesAlt = [];
                 editWindow.style.display = "none";
-                editWindow.innerHTML = "";
+                editDialog.innerHTML = "";
+                document.querySelector("body").style.overflow = "scroll";
             };
         });
     };
@@ -391,8 +398,8 @@ function displayEditCatWindow(isRequired) {
             categories = JSON.parse(JSON.stringify(categoriesAlt));
             categoriesAlt = [];
             editWindow.style.diplay = "none";
-            editWindow.innerHTML = "";
-            console.log(categories);
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
             setDisplay();
         } else {
             displayEditCatWindow(isRequired);
@@ -416,7 +423,7 @@ function displayEditCatWindow(isRequired) {
 };
 
 function displayAddReceiptWindow() {
-    editWindow.innerHTML = `
+    editDialog.innerHTML = `
         <h3>Add Receipt</h3>
         <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
         <form id="add-receipt-form">
@@ -467,9 +474,9 @@ function displayAddReceiptWindow() {
         receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": parseFloat(totalInput.value), "memo": memoInput.value});
         syncReceipts();
         editWindow.style.diplay = "none";
-        editWindow.innerHTML = "";
+        editDialog.innerHTML = "";
+        document.querySelector("body").style.overflow = "scroll";
         setDisplay();
-        alert("Receipt Added!");
     });
 
     const cancelBtn = document.getElementById("add-receipt-cancel-btn");
@@ -478,7 +485,8 @@ function displayAddReceiptWindow() {
                 
         if (cancel) {
             editWindow.style.display = "none";
-            editWindow.innerHTML = "";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
         } else {
             return;
         };
