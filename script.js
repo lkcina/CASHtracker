@@ -289,7 +289,7 @@ function displayEditCatWindow(isRequired) {
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
             htmlResult += `
                 <div class="edit-cat-category">
-                    <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}">
+                    <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}" placeholder="Category">
                     <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn"></button>
                     <div class="edit-cat-subcat-container">
             `;
@@ -298,7 +298,7 @@ function displayEditCatWindow(isRequired) {
                 const subCatNameId = subcatObj.name.replace(/\s/g, "-").toLowerCase();
     
                 htmlResult += `
-                    <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}"</input>
+                    <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}" placeholder="Subcategory">
                     <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn"></button>
                 `;
 
@@ -399,7 +399,7 @@ function displayEditCatWindow(isRequired) {
         if (confirmChanges) {
             categories = JSON.parse(JSON.stringify(categoriesAlt));
             categoriesAlt = [];
-            editWindow.style.diplay = "none";
+            editWindow.style.display = "none";
             editDialog.innerHTML = "";
             document.querySelector("body").style.overflow = "scroll";
             setDisplay();

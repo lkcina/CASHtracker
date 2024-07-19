@@ -64,6 +64,7 @@ button {
     color: rgb(30, 30, 30);
     text-align: center;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 header button {
@@ -181,13 +182,21 @@ button:hover {
 }
 
 .edit-cat-del-cat-btn {
+    background-image: url(./Icons/close_24dp_FFFFFF_FILL0_wght700_GRAD0_opsz24.svg);
     width: 25px;
     height: 25px;
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .edit-cat-del-sub-btn {
     width: 20px;
     height: 20px;
+    position: relative;
+    bottom: 10px;
 }
 
 .edit-window-cancel-btn:hover, .edit-cat-del-cat-btn:hover, .edit-cat-del-sub-btn:hover {
@@ -195,7 +204,84 @@ button:hover {
     background-image: url(./Icons/close_24dp_912828_FILL0_wght700_GRAD0_opsz24.svg);
 }
 
+#edit-dialog input {
+    vertical-align: middle;
+}
 
+.edit-cat-category {
+    width: 100%;
+    border: 3px solid rgb(145, 145, 145);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.edit-cat-name {
+    width: 100%;
+    padding: 5px;
+    background-color: rgb(145, 145, 145);
+    border: none;
+    color: rgb(255, 255, 255);
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.edit-cat-name::placeholder {
+    color: rgb(222, 222, 222);
+}
+
+.edit-cat-subcat-container {
+    position: relative;
+    margin-left: 25px;
+}
+
+.edit-cat-subcat-name {
+    display: inline-block;
+    width: calc(100% - 25px);
+    margin-bottom: 10px;
+    background-color: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid rgb(30, 30, 30);
+    color: rgb(30, 30, 30);
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    padding: 3px;
+}
+
+.edit-cat-subcat-name::placeholder {
+    color: rgb(145, 145, 145);
+}
+
+.add-subcat-btn {
+    width: calc(100% - 25px);
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    color: rgb(145, 145, 145);
+}
+
+.add-subcat-btn:hover, #add-category-btn:hover{
+    color:rgb(43, 144, 134);
+    cursor: pointer;
+}
+
+#add-category-btn {
+    width: 200px;
+    margin: 0 auto 20px;
+    text-align: center;
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    color: rgb(30, 30, 30);
+}
+
+#edit-cat-confirm-btn {
+    display: block;
+    font-size: 2rem;
+    margin: 0 auto;
+}
 
 #budget-container {
     width: calc(100vw - 80px);
