@@ -31,7 +31,7 @@ newBudgetBtn.forEach((btn) => {
             <h3>Budget Name</h3>
             <hr class="edit-dialog-title-divider">
             <button class="edit-window-cancel-btn"></button>
-            <input id="new-budget-name" type="text">
+            <input id="new-budget-name" type="text" placeholder="New Budget">
             <button id="new-budget-continue-btn">Continue</button>
         `;
 
@@ -128,6 +128,7 @@ addReceiptBtn.addEventListener("click", () => {
 
 function setDisplay() {
     if (isCurrentBudget) {
+        document.querySelector("body").style.overflow = "hidden";
         toolbarDiv.style.display = "flex";
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
@@ -258,7 +259,7 @@ function setDisplay() {
                 
             });
         };
-        
+        document.querySelector("body").style.overflow = "scroll";
 
     } else {
         toolbarDiv.style.display = "none";
@@ -430,16 +431,24 @@ function displayAddReceiptWindow() {
         <hr class="edit-dialog-title-divider">
         <button class="edit-window-cancel-btn"></button>
         <form id="add-receipt-form">
-            <label for="add-receipt-cat">Category</label>
-            <select name="category" id="add-receipt-cat" required>
-            </select>
-            <label for="add-receipt-subcat">Subcategory</label>
-            <select name="subcategory" id="add-receipt-subcat" required>
-            </select>
-            <label for="add-receipt-total">Total</label>
-            <span>$<input id="add-receipt-total" name="total" type="float" required></span>
-            <label for="add-receipt-memo">Memo</label>
-            <input id="add-receipt-memo" name="memo" type="text">
+            <div class="form-field">
+                <label for="add-receipt-cat">Category</label>
+                <select name="category" id="add-receipt-cat" required>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-subcat">Subcategory</label>
+                <select name="subcategory" id="add-receipt-subcat" required>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-total">Total</label>
+                <span>$<input id="add-receipt-total" name="total" type="float" required></span>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-memo">Memo</label>
+                <input id="add-receipt-memo" name="memo" type="text">
+            </div>
             <button type="submit" id="add-receipt-submit">Submit</button>
         </form>
     `;
@@ -476,7 +485,7 @@ function displayAddReceiptWindow() {
         event.preventDefault();
         receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": parseFloat(totalInput.value), "memo": memoInput.value});
         syncReceipts();
-        editWindow.style.diplay = "none";
+        editWindow.style.display = "none";
         editDialog.innerHTML = "";
         document.querySelector("body").style.overflow = "scroll";
         setDisplay();

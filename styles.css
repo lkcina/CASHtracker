@@ -23,6 +23,8 @@ body {
     background-attachment: fixed;
 }
 
+/* ---------- HEADER ---------- */
+
 header {
     width: auto;
     height: 150px;
@@ -78,10 +80,14 @@ button:hover {
     border-left: 5px solid rgb(72, 239, 222);
 }
 
+/* ---------- PLACEHOLDER ---------- */
+
 #budget-placeholder {
     border: 1px solid yellow;
     display: block;
 }
+
+/* ---------- TOOLBAR ----------*/
 
 #toolbar {
     width: calc(100vw - 40px);
@@ -123,6 +129,8 @@ button:hover {
     height: 90px;
 }
 
+/* ---------- EDIT WINDOW ---------- */
+
 #edit-window {
     display: none;
     width: 100%;
@@ -137,7 +145,6 @@ button:hover {
 #edit-dialog {
     width: 400px;
     height: auto;
-    min-height: 200px;
     max-height: 70vh;
     padding: 10px;
     overflow-y: scroll;
@@ -164,6 +171,8 @@ button:hover {
     border: none;
     box-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
 }
+
+/* ---------- EDIT CATEGORIES ---------- */
 
 .edit-window-cancel-btn, .edit-cat-del-cat-btn, .edit-cat-del-sub-btn {
     background-image: url(./Icons/close_24dp_919191_FILL0_wght700_GRAD0_opsz24.svg);
@@ -282,6 +291,37 @@ button:hover {
     font-size: 2rem;
     margin: 0 auto;
 }
+
+/* ---------- NEW BUDGET ---------- */
+
+#new-budget-name {
+    display: block;
+    width: 80%;
+    margin: 0 auto 20px;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 3rem;
+    border: none;
+    background-color: transparent;
+    color: rgb(30, 30, 30);
+    text-align: center;
+    padding: 5px;
+}
+
+#new-budget-name::placeholder {
+    color: rgb(145, 145, 145);
+}
+
+#new-budget-continue-btn {
+    display: block;
+    margin: 0 auto;
+    font-size: 2rem;
+}
+
+/* ---------- ADD RECEIPT ---------- */
+
+
+
+/* ---------- BUDGET ---------- */
 
 #budget-container {
     width: calc(100vw - 80px);
