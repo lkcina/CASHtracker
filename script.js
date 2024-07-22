@@ -1,5 +1,6 @@
 const editCatBtn = document.getElementById("edit-cat-btn");
 const editWindow = document.getElementById("edit-window");
+const editDialog = document.getElementById("edit-dialog");
 const budgetContainer = document.getElementById("budget-container");
 const budgetPlaceholder = document.getElementById("budget-placeholder");
 const toolbarDiv = document.getElementById("toolbar");
@@ -16,6 +17,7 @@ let receipts = localStorage.getItem("receipts") ? JSON.parse(localStorage.getIte
 let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.getItem("totalBudget")) : 0;
 
 setDisplay();
+budgetNameFontSize();
 
 window.addEventListener("beforeunload", (event) => {
     event.preventDefault();
@@ -25,17 +27,20 @@ window.addEventListener("beforeunload", (event) => {
 newBudgetBtn.forEach((btn) => {
     btn.addEventListener("click", () => {        
         editWindow.style.display = "block";
-        editWindow.innerHTML = `
-            <h3>Budget Name </h3>
-            <button class="edit-window-cancel-btn" id="new-budget-cancel-btn">X</button>
-            <input id="new-budget-name" type="text">
+        document.querySelector("body").style.overflow = "hidden";
+        editDialog.innerHTML = `
+            <h3>Budget Name</h3>
+            <hr class="edit-dialog-title-divider">
+            <button class="edit-window-cancel-btn"></button>
+            <input id="new-budget-name" type="text" placeholder="New Budget">
             <button id="new-budget-continue-btn">Continue</button>
         `;
-    
-        const cancelBtn = document.getElementById("new-budget-cancel-btn");
+
+        const cancelBtn = document.querySelector(".edit-window-cancel-btn");
         cancelBtn.addEventListener("click", () => {
             editWindow.style.display = "none";
-            editWindow.innerHTML = "";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
         });
 
         const continueBtn = document.getElementById("new-budget-continue-btn");
@@ -61,6 +66,7 @@ newBudgetBtn.forEach((btn) => {
 
 editCatBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
+    document.querySelector("body").style.overflow = "hidden";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
     displayEditCatWindow(false);
 });
@@ -68,6 +74,39 @@ editCatBtn.addEventListener("click", () => {
 budgetNameInput.addEventListener("change", () => {
     budgetName = budgetNameInput.value;
 });
+
+budgetNameInput.addEventListener("input", budgetNameFontSize);
+window.addEventListener("mousemove", budgetNameFontSize);
+
+function budgetNameFontSize() {
+    let newFontSize = parseInt(window.getComputedStyle(budgetNameInput).fontSize.replace(/a-z/, ""));
+    if (newFontSize < 35) {
+        budgetNameInput.style.textShadow = "1px 1px 1px rgba(30, 30, 30, 0.9)";
+    } else if (newFontSize < 50) {
+        budgetNameInput.style.textShadow = "2px 2px 2px rgba(30, 30, 30, 0.9)";
+    } else {
+        budgetNameInput.style.textShadow = "3px 3px 3px rgba(30, 30, 30, 0.9)";
+    };
+
+    if (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+        while (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+            newFontSize -= 1;
+            budgetNameInput.style.fontSize = `${newFontSize}px`;
+        };
+    } else if (newFontSize < 80) {
+        while (newFontSize < 80) {
+            newFontSize += 1;
+            budgetNameInput.style.fontSize = `${newFontSize}px`;
+            
+            if (budgetNameInput.scrollWidth > budgetNameInput.clientWidth) {
+                newFontSize -= 1;
+                budgetNameInput.style.fontSize = `${newFontSize}px`;
+                return;
+            }
+        };
+    
+    };
+};
 
 saveBudgetBtn.addEventListener("click", () => {
     if (confirm("Are you sure you want to save your changes? This cannot be undone.")) {
@@ -84,25 +123,27 @@ saveBudgetBtn.addEventListener("click", () => {
 
 addReceiptBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
+    document.querySelector("body").style.overflow = "hidden";
     displayAddReceiptWindow();
 });
 
 function setDisplay() {
     if (isCurrentBudget) {
-        toolbarDiv.style.display = "block";
+        document.querySelector("body").style.overflow = "hidden";
+        toolbarDiv.style.display = "flex";
         budgetContainer.style.display = "block";
         budgetPlaceholder.style.display = "none";
         budgetNameInput.value = budgetName;
 
         budgetContainer.innerHTML = `
             <div id="budget-header-container">
-                <label for="total-budget">Total Budget</label>
-                <span>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></span>
-                <div id="budget-assigned">Assigned Income: $${getAssignedIncome().toFixed(2)}</div>
-                <div id="budget-remainder">Unassigned Income: $${getUnassignedIncome().toFixed(2)}</div>
-                <div id="total-expenses">Total Expenses: $${getTotalExpenses().toFixed(2)}</div>
+                
+                <div class="header-item"><label for="total-budget">Total Budget</label><hr><p>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></p></div>
+                <div id="budget-assigned" class="header-item">Assigned Income<hr><p>$${getAssignedIncome().toFixed(2)}</p></div>
+                <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
+                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
             </div>
-            <div id="budget-categories-container">
+            <div id="budget-categories-container" data-masonry="{ 'itemSelector': '.budget-category', 'columnWidth': 'calc(50% - 10px)' }">
                 ${budgetCategoriesHtml()}
             </div>
         `;
@@ -152,6 +193,12 @@ function setDisplay() {
                     htmlResult += `
                         <div class="budget-category">
                             <div class="budget-category-header">${cat.name}</div>
+                            <div class="budget-category-table-heads">
+                                <span>Subcategory</span>
+                                <span>Budgeted</span>
+                                <span>Spent</span>
+                                <span>Remaining</span>
+                            </div>
                     `;
                     
                     if (cat.subcategories.length > 0) {
@@ -168,6 +215,7 @@ function setDisplay() {
                                     <span>$${subcatReceiptsTotal.toFixed(2)}</span>
                                     <span>$${(subcat.budgeted - subcatReceiptsTotal).toFixed(2)}</span>
                                 </div>
+                                <hr>
                             `;
                         });
                     };
@@ -187,6 +235,10 @@ function setDisplay() {
             
             return htmlResult;
         };
+
+        const budgetCatContainer = new Masonry("#budget-categories-container", {
+            "itemSelector": ".budget-category"
+        });
 
         const totalBudgetInput = document.getElementById("total-budget");
         totalBudgetInput.addEventListener("change", () => {
@@ -208,7 +260,7 @@ function setDisplay() {
                 
             });
         };
-        
+        document.querySelector("body").style.overflow = "scroll";
 
     } else {
         toolbarDiv.style.display = "none";
@@ -218,12 +270,13 @@ function setDisplay() {
 };
 
 function displayEditCatWindow(isRequired) {
-    editWindow.innerHTML = `
+    editDialog.innerHTML = `
     <h3>Categories</h3>
-    <button class="edit-window-cancel-btn" id="edit-cat-cancel-btn">X</button>
+    <hr class="edit-dialog-title-divider">
+    <button class="edit-window-cancel-btn"></button>
     <div id="edit-cat-container">
         ${editCatHtml()}
-        <button id="add-category-btn">+ New Category</button>
+        <p id="add-category-btn">+ New Category</p>
     </div>
     
     <button id="edit-cat-confirm-btn">Confirm Changes</button>
@@ -238,8 +291,8 @@ function displayEditCatWindow(isRequired) {
             const categoryNameId = categoryObj.name.replace(/\s/g, "-").toLowerCase();
             htmlResult += `
                 <div class="edit-cat-category">
-                    <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}">
-                    <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn">X</button>
+                    <input class="edit-cat-name" type="text" value="${categoryObj.name}" id="${categoryNameId}" placeholder="Category">
+                    <button class="edit-cat-del-cat-btn" id="${categoryNameId}-del-btn"></button>
                     <div class="edit-cat-subcat-container">
             `;
     
@@ -247,15 +300,15 @@ function displayEditCatWindow(isRequired) {
                 const subCatNameId = subcatObj.name.replace(/\s/g, "-").toLowerCase();
     
                 htmlResult += `
-                    <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}"</input>
-                    <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn">X</button>
+                    <input class="edit-cat-subcat-name" type="text" value="${subcatObj.name}" id="${subCatNameId}" placeholder="Subcategory">
+                    <button class="edit-cat-del-sub-btn" id="${subCatNameId}-del-btn"></button>
                 `;
 
                 
             });
     
             htmlResult += `
-                        <button class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</button>
+                        <p class="add-subcat-btn" id="${categoryNameId}-subcat-btn">+ New Subcategory</p>
                     </div>
                 </div>
             `;
@@ -313,7 +366,7 @@ function displayEditCatWindow(isRequired) {
     });
 
     // Cancel Button Event Listener
-    const cancelBtn = document.getElementById("edit-cat-cancel-btn");
+    const cancelBtn = document.querySelector(".edit-window-cancel-btn");
     if (isRequired) {
         cancelBtn.style.display = "none";
     } else {
@@ -325,14 +378,16 @@ function displayEditCatWindow(isRequired) {
                 if (cancel) {
                     categoriesAlt = [];
                     editWindow.style.display = "none";
-                    editWindow.innerHTML = "";
+                    editDialog.innerHTML = "";
+                    document.querySelector("body").style.overflow = "scroll";
                 } else {
                     displayEditCatWindow(isRequired);
                 };
             } else {
                 categoriesAlt = [];
                 editWindow.style.display = "none";
-                editWindow.innerHTML = "";
+                editDialog.innerHTML = "";
+                document.querySelector("body").style.overflow = "scroll";
             };
         });
     };
@@ -346,9 +401,9 @@ function displayEditCatWindow(isRequired) {
         if (confirmChanges) {
             categories = JSON.parse(JSON.stringify(categoriesAlt));
             categoriesAlt = [];
-            editWindow.style.diplay = "none";
-            editWindow.innerHTML = "";
-            console.log(categories);
+            editWindow.style.display = "none";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
             setDisplay();
         } else {
             displayEditCatWindow(isRequired);
@@ -372,20 +427,29 @@ function displayEditCatWindow(isRequired) {
 };
 
 function displayAddReceiptWindow() {
-    editWindow.innerHTML = `
-        <h3>Add Receipt</h3>
-        <button class="edit-window-cancel-btn" id="add-receipt-cancel-btn">X</button>
+    editDialog.innerHTML = `
+        <h3>New Receipt</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
         <form id="add-receipt-form">
-            <label for="add-receipt-cat">Category</label>
-            <select name="category" id="add-receipt-cat" required>
-            </select>
-            <label for="add-receipt-subcat">Subcategory</label>
-            <select name="subcategory" id="add-receipt-subcat" required>
-            </select>
-            <label for="add-receipt-total">Total</label>
-            <span>$<input id="add-receipt-total" name="total" type="float" required></span>
-            <label for="add-receipt-memo">Memo</label>
-            <input id="add-receipt-memo" name="memo" type="text">
+            <div class="form-field">
+                <label for="add-receipt-cat">Category</label>
+                <select name="category" id="add-receipt-cat" required>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-subcat">Subcategory</label>
+                <select name="subcategory" id="add-receipt-subcat" required>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-total">Total</label>
+                <span>$<input id="add-receipt-total" name="total" type="number" step="any" required></span>
+            </div>
+            <div class="form-field">
+                <label for="add-receipt-memo">Memo</label>
+                <input id="add-receipt-memo" name="memo" type="text">
+            </div>
             <button type="submit" id="add-receipt-submit">Submit</button>
         </form>
     `;
@@ -422,19 +486,20 @@ function displayAddReceiptWindow() {
         event.preventDefault();
         receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": parseFloat(totalInput.value), "memo": memoInput.value});
         syncReceipts();
-        editWindow.style.diplay = "none";
-        editWindow.innerHTML = "";
-        alert("Receipt Added!");
+        editWindow.style.display = "none";
+        editDialog.innerHTML = "";
+        document.querySelector("body").style.overflow = "scroll";
         setDisplay();
     });
 
-    const cancelBtn = document.getElementById("add-receipt-cancel-btn");
+    const cancelBtn = document.querySelector(".edit-window-cancel-btn");
     cancelBtn.addEventListener("click", () => {
         const cancel = confirm("Are you sure you want to close the window and lose your changes?");
                 
         if (cancel) {
             editWindow.style.display = "none";
-            editWindow.innerHTML = "";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
         } else {
             return;
         };

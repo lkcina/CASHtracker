@@ -1,36 +1,558 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-size: 10px;
 }
+
+@font-face {
+    font-family: "Nova Mono";
+    src: url(./Fonts/Nova_Mono/NovaMono-Regular.ttf) format(truetype);
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url(./Fonts/Josefin_Sans/JosefinSans-VariableFont_wght.ttf) format(truetype);
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(30deg, rgb(255, 255, 255), rgb(72, 239, 222) 10%, rgb(53, 181, 168) 45%, rgb(53, 181, 168) 55%, rgb(72, 239, 222) 90%, rgb(255, 255, 255) 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* ---------- HEADER ---------- */
 
 header {
-    border: 1px solid blue;
+    width: auto;
+    min-width: 820px;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
+    box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
+
+h1 {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 6rem;
+    display: inline-block;
+    color: rgb(30, 30, 30);
+}
+
+h1 span {
+    font-family: "Nova Mono", sans-serif;
+    font-size: 10rem;
+    color: rgb(43, 144, 134);
+    text-shadow: 3px 3px 3px rgba(30, 30, 30, 0.9);
+}
+
+button {
+    height: auto;
+    width: auto;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border: 5px solid rgb(43, 144, 134);
+    border-top: 5px solid rgb(53, 181, 168);
+    border-left: 5px solid rgb(53, 181, 168);
+    border-radius: 0;
+    font-family: "Josefin Sans";
+    font-weight: bold;
+    color: rgb(30, 30, 30);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+header button {
+    font-size: 2.5rem;
+    margin-right: 65px;
+}
+
+button:hover {
+    border: 5px solid rgb(53, 181, 168);
+    border-top: 5px solid rgb(72, 239, 222);
+    border-left: 5px solid rgb(72, 239, 222);
+}
+
+/* ---------- PLACEHOLDER ---------- */
 
 #budget-placeholder {
-    border: 1px solid yellow;
     display: block;
+    width: 100%;
+    height: 100%;
+
 }
+
+/* ---------- TOOLBAR ----------*/
 
 #toolbar {
-    border: 1px solid green;
+    width: calc(100vw - 40px);
+    max-width: 1250px;
+    min-width: 780px;
+    height: 100px;
+    padding: 20px;
+    margin: 0 auto 20px;
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
+    box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
     display: none;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
 }
+
+#toolbar button {
+    font-size: 2rem;
+}
+
+#budget-name {
+    width: 50%;
+    min-width: 300px;
+    height: auto;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font-family: "Nova Mono", sans-serif;
+    font-size: 8rem;
+    color: rgb(43, 144, 134);
+    text-align: center;
+    vertical-align: super;
+    text-shadow: 3px 3px 3px rgba(30, 30, 30, 0.9);
+    overflow: scroll;
+}
+
+#budget-name:focus {
+    height: 90px;
+}
+
+/* ---------- EDIT WINDOW ---------- */
 
 #edit-window {
-    border: 1px solid red;
     display: none;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(30deg, rgba(255, 255, 255, 0.8), rgba(72, 239, 222, 0.8) 10%, rgba(53, 181, 168, 0.8) 45%, rgba(53, 181, 168, 0.8) 55%, rgba(72, 239, 222, 0.8) 90%, rgba(255, 255, 255, 0.8) 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
 }
+
+#edit-dialog {
+    width: 400px;
+    height: auto;
+    max-height: 70vh;
+    padding: 10px;
+    overflow-y: scroll;
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
+    box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
+    position: fixed;
+    top: 20%;
+    left: calc(50vw - 200px);
+}
+
+#edit-dialog h3 {
+    font-family: "Nova Mono", sans-serif;
+    font-size: 3.5rem;
+    text-align: center;
+    color: rgb(43, 144, 134);
+    text-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
+}
+
+.edit-dialog-title-divider {
+    height: 3px;
+    width: 90%;
+    margin: 0 auto 20px;
+    background-color: rgb(43, 144, 134);
+    border: none;
+    box-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
+}
+
+/* ---------- EDIT CATEGORIES ---------- */
+
+.edit-window-cancel-btn, .edit-cat-del-cat-btn, .edit-cat-del-sub-btn {
+    background-image: url(./Icons/close_24dp_919191_FILL0_wght700_GRAD0_opsz24.svg);
+    background-size: cover;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+}
+
+.edit-window-cancel-btn {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.edit-cat-del-cat-btn {
+    background-image: url(./Icons/close_24dp_FFFFFF_FILL0_wght700_GRAD0_opsz24.svg);
+    width: 25px;
+    height: 25px;
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.edit-cat-del-sub-btn {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    bottom: 10px;
+}
+
+.edit-window-cancel-btn:hover, .edit-cat-del-cat-btn:hover, .edit-cat-del-sub-btn:hover {
+    border: none;
+    background-image: url(./Icons/close_24dp_912828_FILL0_wght700_GRAD0_opsz24.svg);
+}
+
+#edit-dialog input {
+    vertical-align: middle;
+}
+
+.edit-cat-category {
+    width: 100%;
+    border: 3px solid rgb(145, 145, 145);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.edit-cat-name {
+    width: 100%;
+    padding: 5px;
+    background-color: rgb(145, 145, 145);
+    border: none;
+    color: rgb(255, 255, 255);
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.edit-cat-name::placeholder {
+    color: rgb(222, 222, 222);
+}
+
+.edit-cat-subcat-container {
+    position: relative;
+    margin-left: 25px;
+}
+
+.edit-cat-subcat-name {
+    display: inline-block;
+    width: calc(100% - 25px);
+    margin-bottom: 10px;
+    background-color: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid rgb(30, 30, 30);
+    color: rgb(30, 30, 30);
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    padding: 3px;
+}
+
+.edit-cat-subcat-name::placeholder {
+    color: rgb(145, 145, 145);
+}
+
+.add-subcat-btn {
+    width: calc(100% - 25px);
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    color: rgb(145, 145, 145);
+}
+
+.add-subcat-btn:hover, #add-category-btn:hover{
+    color:rgb(43, 144, 134);
+    cursor: pointer;
+}
+
+#add-category-btn {
+    width: 200px;
+    margin: 0 auto 20px;
+    text-align: center;
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    color: rgb(30, 30, 30);
+}
+
+#edit-cat-confirm-btn {
+    display: block;
+    font-size: 2rem;
+    margin: 0 auto;
+}
+
+/* ---------- NEW BUDGET ---------- */
+
+#new-budget-name {
+    display: block;
+    width: 80%;
+    margin: 0 auto 20px;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 3rem;
+    border: none;
+    background-color: transparent;
+    color: rgb(30, 30, 30);
+    text-align: center;
+    padding: 5px;
+}
+
+#new-budget-name::placeholder {
+    color: rgb(145, 145, 145);
+}
+
+#new-budget-continue-btn {
+    display: block;
+    margin: 0 auto;
+    font-size: 2rem;
+}
+
+/* ---------- ADD RECEIPT ---------- */
+
+.form-field {
+    width: 90%;
+    margin: 0 auto 20px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid rgb(145, 145, 145);
+}
+
+.form-field label {
+    font-family: "Nova Mono", sans-serif;
+    font-size: 2rem;
+    color: rgb(145, 145, 145);
+}
+
+.form-field select, .form-field span, .form-field input {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: rgb(30, 30, 30);
+    border: none;
+}
+
+.form-field select, .form-field input {
+    width: 180px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+}
+
+#add-receipt-submit {
+    display: block;
+    margin: 0 auto;
+    font-size: 2rem;
+}
+
+/* ---------- BUDGET ---------- */
 
 #budget-container {
-    border: 1px solid black;
+    width: calc(100vw - 80px);
+    max-width: 1000px;
+    min-width: 740px;
+    height: auto;
+    padding: 20px 10px;
+    margin: 0 auto 20px;
+    background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
+    box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
     display: none;
 }
 
-.category {
-    border: 1px solid orange;
+#budget-header-container {
+    width: auto;
+    height: 120px;
+    margin: 0 5px 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgb(180, 180, 180), rgb(145, 145, 145));
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.subcategory {
-    border: 1px solid purple;
+#budget-header-container div, #budget-header-container label {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: rgb(255, 255, 255);
+}
+
+#budget-header-container hr {
+    width: 200px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+.header-item p {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.header-item:first-of-type p {
+    font-size: 3.5rem;
+    vertical-align: super;
+}
+
+#budget-header-container input {
+    width: 180px;
+    height: 40px;
+    font-family: "Nova Mono",sans-serif;
+    font-size: 3.5rem;
+    background-color: linear-gradient(180deg, rgb(180, 180, 180), rgb(145, 145, 145));;
+    border: none;
+    color: rgb(43, 144, 134);
+    text-shadow: 2px 2px 2px rgba(30, 30, 30, 0.9);
+}
+
+#budget-categories-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, min-width(calc(50% - 10px)));
+    grid-template-rows: masonry;
+    margin: 0;
+}
+
+.budget-category {
+    width: 480px;
+    height: max-content;
+    margin: 10px 5px;
+    border: 5px solid rgb(145, 145, 145);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.budget-category-header {
+    background-color: rgb(145, 145, 145);
+    font-family: "Nova Mono";
+    font-size: 2.5rem;
+    color: rgb(255, 255, 255);
+    margin: -5px -5px 5px -5px;
+    padding: 0 0 5px 5px;
+}
+
+.subcategory-container, .budget-category-table-heads, .category-footer {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.subcategory-container span, .budget-category-table-heads span, .category-footer span {
+    width: 25%;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    color:rgb(30, 30, 30);
+    display:inline-flex;
+    align-items: center;
+}
+
+.budget-category-table-heads span {
+    text-decoration: underline;
+}
+
+.subcategory-container span:nth-of-type(2) {
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    color: rgb(43, 144, 134);
+    text-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
+    padding-bottom: 4px;
+}
+
+.subcategory-container span input {
+    width: calc(100% - 11px);
+    height: 100%;
+    font-family: "Nova Mono";
+    font-size: 2rem;
+    vertical-align: middle;
+    color: rgb(43, 144, 134);
+    text-shadow: 1px 1px 1px rgba(30, 30, 30, 0.9);
+    border: none;
+    background-color: transparent;
+}
+
+.budget-category hr {
+    background-color: rgb(145, 145, 145);
+    height: 2px;
+    border: none;
+}
+
+.budget-category hr:last-of-type {
+    display: none;
+}
+
+.category-footer {
+    width: calc(100% + 10px);
+    background-color: rgb(145, 145, 145);
+    margin: 5px 0 -5px -5px;
+    padding-left: 5px;
+}
+
+.category-footer  span{
+    color: rgb(255, 255, 255);
+}
+
+/* ---------- MEDIA QUERIES ---------- */
+
+@media (max-width: 1079px) {
+    #budget-categories-container {
+        width: 490px;
+        margin: 0 auto;
+        grid-template-columns: 480px;
+    }
+
+    #toolbar button {
+        font-size: 1.5rem;
+    }
+    
+    #budget-header-container {
+        height: 100px;
+    }
+
+    #budget-header-container div, #budget-header-container label {
+        font-size: 1.8rem;
+    }
+    
+    #budget-header-container hr {
+        width: 160px;
+        height: 2px;
+    }
+    
+    .header-item p {
+        font-size: 2.25rem;
+    }
+    
+    .header-item:first-of-type p {
+        font-size: 3.15rem;
+    }
+    
+    #budget-header-container input {
+        width: 135px;
+        height: 30px;
+        font-size: 3.15rem;
+    }
+}
+
+@media (max-width: 820px) {
+    #toolbar {
+        margin: 0 20px 20px;
+    }
+
+    #budget-container {
+
+    margin: 0 40px 20px;
+    }
 }
