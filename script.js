@@ -17,6 +17,7 @@ let receipts = localStorage.getItem("receipts") ? JSON.parse(localStorage.getIte
 let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.getItem("totalBudget")) : 0;
 
 setDisplay();
+budgetNameFontSize();
 
 window.addEventListener("beforeunload", (event) => {
     event.preventDefault();
