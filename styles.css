@@ -533,6 +533,12 @@ button:hover {
     color: rgb(255, 255, 255);
 }
 
+/* ---------- VIEW RECEIPTS WINDOW ---------- */
+
+#receipts-table {
+    border: 1px solid red;
+}
+
 /* ---------- MEDIA QUERIES ---------- */
 
 @media (max-width: 1079px) {

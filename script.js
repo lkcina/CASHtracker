@@ -248,6 +248,14 @@ function setDisplay() {
             setDisplay();
         });
 
+        const viewReceiptsLink = document.getElementById("view-receipts-link");
+        viewReceiptsLink.addEventListener("click", () => {
+            editWindow.style.display = "block";
+            document.querySelector("body").style.overflow = "hidden";
+            receiptsAlt = JSON.parse(JSON.stringify(receipts));
+            displayViewReceiptsWindow();
+        });
+
         if (categories.length > 0) {
             categories.forEach((cat) => {
                 if (cat.subcategories.length > 0) {
@@ -543,14 +551,17 @@ function displayViewReceiptsWindow() {
         <table id="receipts-table">
             <thead>
                 <tr>
-                    <td>Category</td>
-                    <td>Subcategory</td>
-                    <td>Amount</td>
-                    <td>Memo</td>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Amount</th>
+                    <th>Memo</th>
                 </tr>
             </thead>
             ${viewReceiptsHtml()}
         </table>
+        <div id="view-receipts-del-btn-container">
+            ${delBtnHtml()}
+        </div>
         <button id="view-receipts-confirm-btn">Confirm Changes</button>
     `;
 
@@ -558,7 +569,26 @@ function displayViewReceiptsWindow() {
         let htmlResult = "";
 
         receiptsAlt.forEach((receipt) => {
-            htmlResult += ``
+            htmlResult += `
+                <tr>
+                    <td>${categories[receipt.category].name}</td>
+                    <td>${categories[receipt.category].subcategories[receipt.subcategory].name}</td>
+                    <td>$${receipt.total}</td>
+                    <td>${receipt.memo}</td>
+                <tr>
+            `;
         });
+
+        return htmlResult;
+    };
+
+    function delBtnHtml() {
+        let htmlResult = "";
+
+        for (let i = 0; i < receiptsAlt.length; i ++) {
+            htmlResult += '<button class="del-receipt-btn"></button>';
+        };
+
+        return htmlResult;
     };
 }
