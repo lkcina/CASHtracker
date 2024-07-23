@@ -620,4 +620,21 @@ function displayViewReceiptsWindow() {
                     displayViewReceiptsWindow();
         });
     });
+
+    const confirmBtn = document.getElementById("view-receipts-confirm-btn");
+    confirmBtn.addEventListener("click", () => {
+        const confirmChanges = confirm("Are you sure you want to confirm changes? This action cannot be undone.");
+
+        if (confirmChanges) {
+            receipts = JSON.parse(JSON.stringify(receiptsAlt));
+            receiptsAlt = [];
+            editWindow.style.display = "none";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
+            syncReceipts();
+            setDisplay();
+        } else {
+            displayViewReceiptsWindow();
+        };
+    });
 }
