@@ -14,6 +14,7 @@ let categories = localStorage.getItem("categories") ? JSON.parse(localStorage.ge
 let categoriesAlt = [];
 let budgetName = localStorage.getItem("budgetName") ? localStorage.getItem("budgetName") : "";
 let receipts = localStorage.getItem("receipts") ? JSON.parse(localStorage.getItem("receipts")) : [];
+let receiptsAlt = [];
 let totalBudget = localStorage.getItem("totalBudget") ? JSON.parse(localStorage.getItem("totalBudget")) : 0;
 
 setDisplay();
@@ -68,6 +69,7 @@ editCatBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     document.querySelector("body").style.overflow = "hidden";
     categoriesAlt = JSON.parse(JSON.stringify(categories));
+    receiptsAlt = JSON.parse(JSON.stringify(receipts));
     displayEditCatWindow(false);
 });
 
@@ -331,6 +333,14 @@ function displayEditCatWindow(isRequired) {
                 catDelBtns[catInputs.indexOf(input)].style.display = "inline-block";
                 
                 catDelBtns[catInputs.indexOf(input)].addEventListener("click", () => {
+                    receiptsAlt.forEach((receipt) => {
+                        if (receipt.category > catInputs.indexOf(input)) {
+                            console.log(receipt);
+                            receipt.category -= 1;
+                            console.log(receipt);
+                        }
+                    });
+
                     categoriesAlt.splice(catInputs.indexOf(input), 1);
                     displayEditCatWindow(isRequired);
                 });
@@ -401,9 +411,12 @@ function displayEditCatWindow(isRequired) {
         if (confirmChanges) {
             categories = JSON.parse(JSON.stringify(categoriesAlt));
             categoriesAlt = [];
+            receipts = JSON.parse(JSON.stringify(receiptsAlt));
+            receiptsAlt = [];
             editWindow.style.display = "none";
             editDialog.innerHTML = "";
             document.querySelector("body").style.overflow = "scroll";
+            syncReceipts();
             setDisplay();
         } else {
             displayEditCatWindow(isRequired);
@@ -484,7 +497,7 @@ function displayAddReceiptWindow() {
     
     addReceiptForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        receipts.unshift({"category": selectCategory.value, "subcategory": selectSubcategory.value, "total": parseFloat(totalInput.value), "memo": memoInput.value});
+        receipts.unshift({"category": parseInt(selectCategory.value), "subcategory": parseInt(selectSubcategory.value), "total": parseFloat(totalInput.value), "memo": memoInput.value});
         syncReceipts();
         editWindow.style.display = "none";
         editDialog.innerHTML = "";
