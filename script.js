@@ -612,4 +612,12 @@ function displayViewReceiptsWindow() {
             document.querySelector("body").style.overflow = "scroll";
         };
     });
+
+    const delReceiptBtns = [...document.getElementsByClassName("del-receipt-btn")];
+    delReceiptBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            receiptsAlt.splice(delReceiptBtns.indexOf(btn), 1);
+                    displayViewReceiptsWindow();
+        });
+    });
 }
