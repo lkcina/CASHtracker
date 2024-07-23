@@ -335,9 +335,7 @@ function displayEditCatWindow(isRequired) {
                 catDelBtns[catInputs.indexOf(input)].addEventListener("click", () => {
                     receiptsAlt.forEach((receipt) => {
                         if (receipt.category > catInputs.indexOf(input)) {
-                            console.log(receipt);
                             receipt.category -= 1;
-                            console.log(receipt);
                         }
                     });
 
@@ -366,6 +364,12 @@ function displayEditCatWindow(isRequired) {
         subcatDelBtns.forEach((delBtn) => {
             if (category.subcategories[subcatDelBtns.indexOf(delBtn)].receipts.length === 0) {
                 delBtn.addEventListener("click", () => {
+                    receiptsAlt.forEach((receipt) => {
+                        if (receipt.category === catInputs.indexOf(input) && receipt.subcategory > subcatDelBtns.indexOf(delBtn)) {
+                            receipt.subcategory -= 1;
+                        };
+                    });
+
                     category.subcategories.splice(subcatDelBtns.indexOf(delBtn), 1);
                     displayEditCatWindow(isRequired);
                 });
