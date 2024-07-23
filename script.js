@@ -273,15 +273,15 @@ function setDisplay() {
 
 function displayEditCatWindow(isRequired) {
     editDialog.innerHTML = `
-    <h3>Categories</h3>
-    <hr class="edit-dialog-title-divider">
-    <button class="edit-window-cancel-btn"></button>
-    <div id="edit-cat-container">
-        ${editCatHtml()}
-        <p id="add-category-btn">+ New Category</p>
-    </div>
+        <h3>Categories</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
+        <div id="edit-cat-container">
+            ${editCatHtml()}
+            <p id="add-category-btn">+ New Category</p>
+        </div>
     
-    <button id="edit-cat-confirm-btn">Confirm Changes</button>
+        <button id="edit-cat-confirm-btn">Confirm Changes</button>
     `;
 
 
@@ -534,3 +534,31 @@ function syncReceipts() {
         categories[receipt.category].subcategories[receipt.subcategory].receipts.push(receipt.total);
     });
 };
+
+function displayViewReceiptsWindow() {
+    editDialog.innerHTML = `
+        <h3>Receipts</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
+        <table id="receipts-table">
+            <thead>
+                <tr>
+                    <td>Category</td>
+                    <td>Subcategory</td>
+                    <td>Amount</td>
+                    <td>Memo</td>
+                </tr>
+            </thead>
+            ${viewReceiptsHtml()}
+        </table>
+        <button id="view-receipts-confirm-btn">Confirm Changes</button>
+    `;
+
+    function viewReceiptsHtml() {
+        let htmlResult = "";
+
+        receiptsAlt.forEach((receipt) => {
+            htmlResult += ``
+        });
+    };
+}
