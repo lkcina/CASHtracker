@@ -611,3 +611,48 @@ button:hover {
     margin: 0 40px 20px;
     }
 }
+
+/* ---------- PRINT LAYOUT ---------- */
+
+@media print {
+    body {
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+        background-color: rgb(255, 255, 255) !important;
+    }
+
+    #toolbar {
+        display: none !important;
+    }
+
+    #save-and-print-container {
+        display: none !important;
+    }
+
+    #budget-name {
+        overflow: hidden !important;
+        text-align: right !important;
+    }
+
+    #budget-container {
+        width: auto !important;
+        height: auto !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        background: rgb(255, 255, 255) !important;
+        box-shadow: none !important;
+    }
+
+    #budget-header-container {
+        margin: 0 20px !important;
+        background-color: rgb(145, 145, 145) !important;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    #budget-categories-container {
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    
+}
