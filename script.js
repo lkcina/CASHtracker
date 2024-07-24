@@ -251,6 +251,8 @@ function setDisplay() {
         const viewReceiptsLink = document.getElementById("view-receipts-link");
         viewReceiptsLink.addEventListener("click", () => {
             editWindow.style.display = "block";
+            editDialog.style.width = "800px";
+            editDialog.style.left = "calc(50vw - 400px)";
             document.querySelector("body").style.overflow = "hidden";
             receiptsAlt = JSON.parse(JSON.stringify(receipts));
             displayViewReceiptsWindow();
@@ -555,13 +557,13 @@ function displayViewReceiptsWindow() {
                     <th>Subcategory</th>
                     <th>Amount</th>
                     <th>Memo</th>
+                    <th></th>
                 </tr>
             </thead>
-            ${viewReceiptsHtml()}
+            <tbody>
+                ${viewReceiptsHtml()}
+            </tbody>
         </table>
-        <div id="view-receipts-del-btn-container">
-            ${delBtnHtml()}
-        </div>
         <button id="view-receipts-confirm-btn">Confirm Changes</button>
     `;
 
@@ -575,23 +577,14 @@ function displayViewReceiptsWindow() {
                     <td>${categories[receipt.category].subcategories[receipt.subcategory].name}</td>
                     <td>$${receipt.total}</td>
                     <td>${receipt.memo}</td>
+                    <td><button class="del-receipt-btn"></button></td>
                 <tr>
             `;
         });
 
         return htmlResult;
     };
-
-    function delBtnHtml() {
-        let htmlResult = "";
-
-        for (let i = 0; i < receiptsAlt.length; i ++) {
-            htmlResult += '<button class="del-receipt-btn"></button>';
-        };
-
-        return htmlResult;
-    };
-
+    
     const cancelBtn = document.querySelector(".edit-window-cancel-btn");
     cancelBtn.addEventListener("click", () => {
         if (JSON.stringify(receiptsAlt) !== JSON.stringify(receipts)) {
@@ -600,6 +593,8 @@ function displayViewReceiptsWindow() {
             if (cancel) {
                 receiptsAlt = [];
                 editWindow.style.display = "none";
+                editDialog.style.width = "400px";
+                editDialog.style.left = "calc(50vw - 200px)";
                 editDialog.innerHTML = "";
                 document.querySelector("body").style.overflow = "scroll";
             } else {
@@ -608,6 +603,8 @@ function displayViewReceiptsWindow() {
         } else {
             receiptsAlt = [];
             editWindow.style.display = "none";
+            editDialog.style.width = "400px";
+            editDialog.style.left = "calc(50vw - 200px)";
             editDialog.innerHTML = "";
             document.querySelector("body").style.overflow = "scroll";
         };
@@ -629,6 +626,8 @@ function displayViewReceiptsWindow() {
             receipts = JSON.parse(JSON.stringify(receiptsAlt));
             receiptsAlt = [];
             editWindow.style.display = "none";
+            editDialog.style.width = "400px";
+            editDialog.style.left = "calc(50vw - 200px)";
             editDialog.innerHTML = "";
             document.querySelector("body").style.overflow = "scroll";
             syncReceipts();

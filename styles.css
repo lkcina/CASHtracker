@@ -189,7 +189,7 @@ button:hover {
 
 /* ---------- EDIT CATEGORIES ---------- */
 
-.edit-window-cancel-btn, .edit-cat-del-cat-btn, .edit-cat-del-sub-btn {
+.edit-window-cancel-btn, .edit-cat-del-cat-btn, .edit-cat-del-sub-btn, .del-receipt-btn {
     background-image: url(./Icons/close_24dp_919191_FILL0_wght700_GRAD0_opsz24.svg);
     background-size: cover;
     border: none;
@@ -223,7 +223,7 @@ button:hover {
     bottom: 10px;
 }
 
-.edit-window-cancel-btn:hover, .edit-cat-del-cat-btn:hover, .edit-cat-del-sub-btn:hover {
+.edit-window-cancel-btn:hover, .edit-cat-del-cat-btn:hover, .edit-cat-del-sub-btn:hover, .del-receipt-btn:hover {
     border: none;
     background-image: url(./Icons/close_24dp_912828_FILL0_wght700_GRAD0_opsz24.svg);
 }
@@ -536,7 +536,41 @@ button:hover {
 /* ---------- VIEW RECEIPTS WINDOW ---------- */
 
 #receipts-table {
-    border: 1px solid red;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#receipts-table th {
+    width: auto;
+    padding: 5px;
+    font-family: "Nova Mono",sans-serif;
+    font-size: 2rem;
+    background-color: rgb(145, 145, 145);
+    color: rgb(255, 255, 255);
+}
+
+#receipts-table tr {
+    border-bottom: 3px solid rgb(145, 145, 145);
+}
+
+#receipts-table td {
+    height: 40px;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.8rem;
+    color: rgb(30, 30, 30);
+    vertical-align: middle;
+}
+
+.del-receipt-btn {
+    width: 30px;
+    height: 30px;
+}
+
+#view-receipts-confirm-btn {
+    display: block;
+    font-size: 2rem;
+    margin: 0 auto; 
 }
 
 /* ---------- MEDIA QUERIES ---------- */
