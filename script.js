@@ -8,6 +8,7 @@ const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 const saveBudgetBtn = document.getElementById("save-budget-btn");
+const printBudgetBtn = document.getElementById("print-budget-btn");
 const viewReceiptsBtn = document.getElementById("view-receipts-btn");
 
 let isCurrentBudget = localStorage.getItem("currentBudget") ? JSON.parse(localStorage.getItem("currentBudget")) : false;
@@ -124,6 +125,20 @@ saveBudgetBtn.addEventListener("click", () => {
     };
 });
 
+window.addEventListener("beforeprint", () => {
+    document.querySelector("header").innerHTML = `
+        <h1><span>CA$H</span>tracker</h1>
+        <div id="budget-name">${budgetName}</div>
+    `;
+    
+    document.getElementById("budget-name").style.fontSize = window.getComputedStyle(budgetNameInput).fontSize;
+    document.getElementById("budget-name").style.width = window.getComputedStyle(budgetNameInput).width;
+});
+
+printBudgetBtn.addEventListener("click", () => {
+    print();
+});
+
 viewReceiptsBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     editDialog.style.width = "800px";
@@ -153,7 +168,7 @@ function setDisplay() {
                 <div class="header-item"><label for="total-budget">Total Budget</label><hr><p>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></p></div>
                 <div id="budget-assigned" class="header-item">Assigned Income<hr><p>$${getAssignedIncome().toFixed(2)}</p></div>
                 <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
-                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p><span id="view-receipts-link">View Receipts</span></div>
+                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
             </div>
             <div id="budget-categories-container" data-masonry="{ 'itemSelector': '.budget-category', 'columnWidth': 'calc(50% - 10px)' }">
                 ${budgetCategoriesHtml()}
