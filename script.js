@@ -8,6 +8,7 @@ const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 const saveBudgetBtn = document.getElementById("save-budget-btn");
+const viewReceiptsBtn = document.getElementById("view-receipts-btn");
 
 let isCurrentBudget = localStorage.getItem("currentBudget") ? JSON.parse(localStorage.getItem("currentBudget")) : false;
 let categories = localStorage.getItem("categories") ? JSON.parse(localStorage.getItem("categories")) : [];
@@ -123,6 +124,15 @@ saveBudgetBtn.addEventListener("click", () => {
     };
 });
 
+viewReceiptsBtn.addEventListener("click", () => {
+    editWindow.style.display = "block";
+    editDialog.style.width = "800px";
+    editDialog.style.left = "calc(50vw - 400px)";
+    document.querySelector("body").style.overflow = "hidden";
+    receiptsAlt = JSON.parse(JSON.stringify(receipts));
+    displayViewReceiptsWindow();
+});
+
 addReceiptBtn.addEventListener("click", () => {
     editWindow.style.display = "block";
     document.querySelector("body").style.overflow = "hidden";
@@ -143,7 +153,7 @@ function setDisplay() {
                 <div class="header-item"><label for="total-budget">Total Budget</label><hr><p>$<input id="total-budget" type="number" value="${totalBudget}" min="0"></p></div>
                 <div id="budget-assigned" class="header-item">Assigned Income<hr><p>$${getAssignedIncome().toFixed(2)}</p></div>
                 <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
-                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
+                <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p><span id="view-receipts-link">View Receipts</span></div>
             </div>
             <div id="budget-categories-container" data-masonry="{ 'itemSelector': '.budget-category', 'columnWidth': 'calc(50% - 10px)' }">
                 ${budgetCategoriesHtml()}
@@ -273,15 +283,15 @@ function setDisplay() {
 
 function displayEditCatWindow(isRequired) {
     editDialog.innerHTML = `
-    <h3>Categories</h3>
-    <hr class="edit-dialog-title-divider">
-    <button class="edit-window-cancel-btn"></button>
-    <div id="edit-cat-container">
-        ${editCatHtml()}
-        <p id="add-category-btn">+ New Category</p>
-    </div>
+        <h3>Categories</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
+        <div id="edit-cat-container">
+            ${editCatHtml()}
+            <p id="add-category-btn">+ New Category</p>
+        </div>
     
-    <button id="edit-cat-confirm-btn">Confirm Changes</button>
+        <button id="edit-cat-confirm-btn">Confirm Changes</button>
     `;
 
 
@@ -534,3 +544,96 @@ function syncReceipts() {
         categories[receipt.category].subcategories[receipt.subcategory].receipts.push(receipt.total);
     });
 };
+
+function displayViewReceiptsWindow() {
+    editDialog.innerHTML = `
+        <h3>Receipts</h3>
+        <hr class="edit-dialog-title-divider">
+        <button class="edit-window-cancel-btn"></button>
+        <table id="receipts-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Amount</th>
+                    <th>Memo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${viewReceiptsHtml()}
+            </tbody>
+        </table>
+        <button id="view-receipts-confirm-btn">Confirm Changes</button>
+    `;
+
+    function viewReceiptsHtml() {
+        let htmlResult = "";
+
+        receiptsAlt.forEach((receipt) => {
+            htmlResult += `
+                <tr>
+                    <td>${categories[receipt.category].name}</td>
+                    <td>${categories[receipt.category].subcategories[receipt.subcategory].name}</td>
+                    <td>$${receipt.total}</td>
+                    <td>${receipt.memo}</td>
+                    <td><button class="del-receipt-btn"></button></td>
+                <tr>
+            `;
+        });
+
+        return htmlResult;
+    };
+    
+    const cancelBtn = document.querySelector(".edit-window-cancel-btn");
+    cancelBtn.addEventListener("click", () => {
+        if (JSON.stringify(receiptsAlt) !== JSON.stringify(receipts)) {
+            const cancel = confirm("Are you sure you want to close the window and lose your changes?");
+            
+            if (cancel) {
+                receiptsAlt = [];
+                editWindow.style.display = "none";
+                editDialog.style.width = "400px";
+                editDialog.style.left = "calc(50vw - 200px)";
+                editDialog.innerHTML = "";
+                document.querySelector("body").style.overflow = "scroll";
+            } else {
+                displayViewReceiptsWindow();
+            };
+        } else {
+            receiptsAlt = [];
+            editWindow.style.display = "none";
+            editDialog.style.width = "400px";
+            editDialog.style.left = "calc(50vw - 200px)";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
+        };
+    });
+
+    const delReceiptBtns = [...document.getElementsByClassName("del-receipt-btn")];
+    delReceiptBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            receiptsAlt.splice(delReceiptBtns.indexOf(btn), 1);
+                    displayViewReceiptsWindow();
+        });
+    });
+
+    const confirmBtn = document.getElementById("view-receipts-confirm-btn");
+    confirmBtn.addEventListener("click", () => {
+        const confirmChanges = confirm("Are you sure you want to confirm changes? This action cannot be undone.");
+
+        if (confirmChanges) {
+            receipts = JSON.parse(JSON.stringify(receiptsAlt));
+            receiptsAlt = [];
+            editWindow.style.display = "none";
+            editDialog.style.width = "400px";
+            editDialog.style.left = "calc(50vw - 200px)";
+            editDialog.innerHTML = "";
+            document.querySelector("body").style.overflow = "scroll";
+            syncReceipts();
+            setDisplay();
+        } else {
+            displayViewReceiptsWindow();
+        };
+    });
+}
