@@ -8,6 +8,7 @@ const newBudgetBtn = [...document.getElementsByClassName("new-budget-btn")];
 const budgetNameInput = document.getElementById("budget-name");
 const addReceiptBtn = document.getElementById("add-receipt-btn");
 const saveBudgetBtn = document.getElementById("save-budget-btn");
+const viewReceiptsBtn = document.getElementById("view-receipts-btn");
 
 let isCurrentBudget = localStorage.getItem("currentBudget") ? JSON.parse(localStorage.getItem("currentBudget")) : false;
 let categories = localStorage.getItem("categories") ? JSON.parse(localStorage.getItem("categories")) : [];
@@ -121,6 +122,15 @@ saveBudgetBtn.addEventListener("click", () => {
     } else {
         return;
     };
+});
+
+viewReceiptsBtn.addEventListener("click", () => {
+    editWindow.style.display = "block";
+    editDialog.style.width = "800px";
+    editDialog.style.left = "calc(50vw - 400px)";
+    document.querySelector("body").style.overflow = "hidden";
+    receiptsAlt = JSON.parse(JSON.stringify(receipts));
+    displayViewReceiptsWindow();
 });
 
 addReceiptBtn.addEventListener("click", () => {
@@ -246,16 +256,6 @@ function setDisplay() {
         totalBudgetInput.addEventListener("change", () => {
             totalBudget = parseFloat(totalBudgetInput.value);
             setDisplay();
-        });
-
-        const viewReceiptsLink = document.getElementById("view-receipts-link");
-        viewReceiptsLink.addEventListener("click", () => {
-            editWindow.style.display = "block";
-            editDialog.style.width = "800px";
-            editDialog.style.left = "calc(50vw - 400px)";
-            document.querySelector("body").style.overflow = "hidden";
-            receiptsAlt = JSON.parse(JSON.stringify(receipts));
-            displayViewReceiptsWindow();
         });
 
         if (categories.length > 0) {
