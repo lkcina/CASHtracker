@@ -381,6 +381,7 @@ button:hover {
     background: linear-gradient(180deg, rgb(255, 255, 255), rgb(222, 222, 222));
     box-shadow: 5px 5px 5px rgba(30, 30, 30, 0.9);
     display: none;
+    text-align: center;
 }
 
 #budget-header-container {
@@ -431,16 +432,23 @@ button:hover {
 }
 
 #budget-categories-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, min-width(calc(50% - 10px)));
-    grid-template-rows: masonry;
-    margin: 0;
+    display: flex;
+    margin: 0 auto;
+}
+
+.colcade-col {
+    width: 480px;
+    margin: 0 4px;
+}
+
+.colcade-col:last-of-type {
+    margin-left: 6px;
 }
 
 .budget-category {
-    width: 480px;
+    width: 100%;
     height: max-content;
-    margin: 10px 5px;
+    margin: 10px 0;
     border: 5px solid rgb(145, 145, 145);
     border-radius: 10px;
     padding: 5px;
@@ -567,8 +575,7 @@ button:hover {
 @media (max-width: 1079px) {
     #budget-categories-container {
         width: 490px;
-        margin: 0 auto;
-        grid-template-columns: 480px;
+        flex-direction: column;
     }
 
     
@@ -652,7 +659,10 @@ button:hover {
     #budget-categories-container {
         width: 100% !important;
         margin: 0 auto !important;
+        flex-direction: row;
     }
 
-    
+    .budget-category {
+        page-break-inside: avoid !important;
+    }
 }

@@ -170,7 +170,10 @@ function setDisplay() {
                 <div id="budget-remainder" class="header-item">Unassigned Income<hr><p>$${getUnassignedIncome().toFixed(2)}</p></div>
                 <div id="total-expenses" class="header-item">Total Expenses<hr><p>$${getTotalExpenses().toFixed(2)}</p></div>
             </div>
-            <div id="budget-categories-container" data-masonry="{ 'itemSelector': '.budget-category', 'columnWidth': 'calc(50% - 10px)' }">
+            <div id="budget-categories-container">
+                <div class="colcade-col"></div>
+                <div class="colcade-col"></div>
+
                 ${budgetCategoriesHtml()}
             </div>
         `;
@@ -263,8 +266,9 @@ function setDisplay() {
             return htmlResult;
         };
 
-        const budgetCatContainer = new Masonry("#budget-categories-container", {
-            "itemSelector": ".budget-category"
+        const budgetCatContainer = new Colcade("#budget-categories-container", {
+            "columns": ".colcade-col",
+            "items": ".budget-category"
         });
 
         const totalBudgetInput = document.getElementById("total-budget");
