@@ -564,6 +564,21 @@ button:hover {
     margin: 0 auto; 
 }
 
+/* ---------- SAVE AND PRINT BUTTONS ----------*/
+
+#save-and-print-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    left: 40px;
+    bottom: 40px;
+}
+
+#save-and-print-container button {
+    font-size: 2rem;
+}
+
 /* ---------- MEDIA QUERIES ---------- */
 
 @media (max-width: 1140px) {
@@ -578,7 +593,10 @@ button:hover {
         flex-direction: column;
     }
 
-    
+    #save-and-print-container { 
+        left: 80px;
+        bottom: 40px;
+    }
     
     #budget-header-container {
         height: 100px;

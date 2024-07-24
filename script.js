@@ -135,6 +135,15 @@ window.addEventListener("beforeprint", () => {
     document.getElementById("budget-name").style.width = window.getComputedStyle(budgetNameInput).width;
 });
 
+window.addEventListener("afterprint", () => {
+    document.querySelector("header").innerHTML = `
+        <h1><span>CA$H</span>tracker</h1>
+        <button class="new-budget-btn">Create New Budget</button>
+    `;
+
+    setDisplay();
+});
+
 printBudgetBtn.addEventListener("click", () => {
     print();
 });
