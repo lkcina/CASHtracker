@@ -140,7 +140,46 @@ window.addEventListener("afterprint", () => {
         <h1><span>CA$H</span>tracker</h1>
         <button class="new-budget-btn">Create New Budget</button>
     `;
-
+    
+    [...document.getElementsByClassName("new-budget-btn")].forEach((btn) => {
+        btn.addEventListener("click", () => {        
+            editWindow.style.display = "block";
+            document.querySelector("body").style.overflow = "hidden";
+            editDialog.innerHTML = `
+                <h3>Budget Name</h3>
+                <hr class="edit-dialog-title-divider">
+                <button class="edit-window-cancel-btn"></button>
+                <input id="new-budget-name" type="text" placeholder="New Budget">
+                <button id="new-budget-continue-btn">Continue</button>
+            `;
+    
+            const cancelBtn = document.querySelector(".edit-window-cancel-btn");
+            cancelBtn.addEventListener("click", () => {
+                editWindow.style.display = "none";
+                editDialog.innerHTML = "";
+                document.querySelector("body").style.overflow = "scroll";
+            });
+    
+            const continueBtn = document.getElementById("new-budget-continue-btn");
+            const newBudgetName = document.getElementById("new-budget-name");
+    
+            continueBtn.addEventListener("click", () => {
+                if (newBudgetName.value === "") {
+                    alert("Please provide a name for your new budget.");
+                } else {
+                    const replaceBudget = confirm("Are you sure you want to create a new budget? Any existing budget information will be overwritten.");
+                    if (replaceBudget) {
+                        isCurrentBudget = true;
+                        budgetName = newBudgetName.value;
+                        categoriesAlt = [];
+                        displayEditCatWindow(true);
+                    } else {
+                        return;
+                    };
+                };
+            });        
+        });
+    });
     setDisplay();
 });
 
